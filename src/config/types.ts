@@ -16,9 +16,7 @@ export type Source = {
 		pass: string;
 	};
 	redis: {
-		host: string;
-		port: number;
-		pass: string;
+		url: string;
 	};
 	elasticsearch: {
 		host: string;
