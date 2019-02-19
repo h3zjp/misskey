@@ -8,7 +8,7 @@
 	<span class="is-bot" v-if="note.user.isBot">bot</span>
 	<span class="is-cat" v-if="note.user.isCat">cat</span>
 	<span class="username"><mk-acct :user="note.user"/></span>
-	<span class="is-verified" v-if="note.user.isVerified" :title="$t('@.verified-user')"><fa icon="star"/></span>
+	<span class="is-verified" v-if="note.user.isVerified" :title="$t('@.verified-user')"><img src="https://media.h3z.jp/img/verified.png" style="width:1.0em;" /></span>
 	<div class="info">
 		<span class="app" v-if="note.app && !mini && $store.state.settings.showVia">via <b>{{ note.app.name }}</b></span>
 		<span class="mobile" v-if="note.viaMobile"><fa icon="mobile-alt"/></span>
