@@ -1,12 +1,16 @@
 <template>
 <span class="mk-nav">
-	<a :href="aboutUrl">{{ $t('about') }}</a>
+	<a :href="aboutUrl" target="_blank">{{ $t('about') }}</a>
 	<i>・</i>
-	<a :href="repositoryUrl">{{ $t('repository') }}</a>
+	<a href="/stats" target="_blank">{{ $t('stats') }}</a>
+	<i>・</i>
+	<a :href="repositoryUrl" target="_blank">{{ $t('repository') }}</a>
 	<i>・</i>
 	<a :href="feedbackUrl" target="_blank">{{ $t('feedback') }}</a>
 	<i>・</i>
-	<a href="/dev">{{ $t('develop') }}</a>
+	<a href="/dev" target="_blank">{{ $t('develop') }}</a>
+	<i>・</i>
+	<a href="https://xn--48jwg508p.net/tos" target="_blank">{{ $t('terms') }}</a>
 </span>
 </template>
 
