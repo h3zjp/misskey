@@ -77,7 +77,7 @@ export default Vue.extend({
 					text-align left
 					padding 8px
 					line-height 16px
-					font-family monospace
+					font-family inherit
 					font-size 14px
 					color #444
 					background #f8f8f8
