@@ -94,6 +94,7 @@ const whiteList = [
 	'stitcher.com',
 	'stream.me',
 	'switchboard.live',
+	'tube.h3z.jp',
 	'tunein.com',
 	'twitcasting.tv',
 	'twitch.tv',
