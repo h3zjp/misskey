@@ -9,13 +9,13 @@ import create from '../../../../services/note/create';
 import define from '../../define';
 import fetchMeta from '../../../../misc/fetch-meta';
 
-let maxNoteTextLength = 1000;
+let maxNoteTextLength = 10000;
 
 setInterval(() => {
 	fetchMeta().then(m => {
 		maxNoteTextLength = m.maxNoteTextLength;
 	});
-}, 3000);
+}, 30000);
 
 export const meta = {
 	stability: 'stable',
@@ -160,7 +160,7 @@ export const meta = {
 			validator: $.optional.obj({
 				choices: $.arr($.str)
 					.unique()
-					.range(2, 10)
+					.range(2, 20)
 					.each(c => c.length > 0 && c.length < 50)
 			}).strict(),
 			desc: {
