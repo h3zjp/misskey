@@ -17,9 +17,7 @@ function initializeQueue() {
 	if (queueAvailable && enableQueue) {
 		return new Queue('misskey', {
 			redis: {
-				port: config.redis.port,
-				host: config.redis.host,
-				password: config.redis.pass
+				url: config.redis.url
 			},
 
 			removeOnSuccess: true,
