@@ -26,7 +26,7 @@ module.exports = (server: http.Server) => {
 		if (config.redis) {
 			// Connect to Redis
 			const subscriber = redis.createClient(
-				config.redis.port, config.redis.host);
+				config.redis.url);
 
 			subscriber.subscribe('misskey');
 
