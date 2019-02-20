@@ -2,8 +2,6 @@
 <span class="mk-nav">
 	<a :href="aboutUrl" target="_blank">{{ $t('about') }}</a>
 	<i>・</i>
-	<a href="/stats" target="_blank">{{ $t('stats') }}</a>
-	<i>・</i>
 	<a :href="repositoryUrl" target="_blank">{{ $t('repository') }}</a>
 	<i>・</i>
 	<a :href="feedbackUrl" target="_blank">{{ $t('feedback') }}</a>
