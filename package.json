@@ -1,7 +1,11 @@
 {
 	"name": "misskey",
 	"author": "syuilo <i@syuilo.com>",
+<<<<<<< HEAD
 	"version": "10.87.3-h3zjp",
+=======
+	"version": "10.87.5",
+>>>>>>> upstream/develop
 	"codename": "nighthike",
 	"repository": {
 		"type": "git",
