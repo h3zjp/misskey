@@ -54,12 +54,6 @@ html {
 	font-family: Sans-Serif;
 }
 
-body {
-	font-family: "Koruri", Sans-Serif;
-	font-weight: 400;
-	font-style: normal;
-}
-
 body > noscript {
 	position: fixed;
 	z-index: 2;
