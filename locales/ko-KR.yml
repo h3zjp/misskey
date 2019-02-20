@@ -359,6 +359,7 @@ common/views/components/nav.vue:
   repository: "저장소"
   develop: "개발자"
   feedback: "피드백"
+  terms: "이용 약관"
 common/views/components/note-menu.vue:
   mention: "멘션"
   detail: "상세"
@@ -1313,7 +1314,7 @@ desktop/views/pages/welcome.vue:
   timeline: "타임라인"
   announcements: "공지사항"
   photos: "최근 이미지"
-  powered-by-misskey: "Powered by <b>Misskey</b>."
+  powered-by-misskey: "Hosted by <a href=\"https://h3z.jp/\" target=\"_blank\">h3zjp</a>"
   info: "정보"
 desktop/views/pages/drive.vue:
   title: "Misskey Drive"
