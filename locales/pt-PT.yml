@@ -156,35 +156,8 @@ common/views/components/cw-button.vue:
   poll: "Enquetes"
 common/views/components/messaging.vue:
   you: "Você"
-<<<<<<< HEAD
-  no-history: "履歴はありません"
-common/views/components/messaging-room.vue:
-  empty: "このユーザーと話したことはありません"
-  no-history: "これより過去の履歴はありません"
-  resize-form: "ドラッグしてフォームの広さを調整"
-  new-message: "新しいメッセージがあります"
-  only-one-file-attached: "メッセージに添付できるのはひとつのファイルのみです"
-common/views/components/messaging-room.form.vue:
-  input-message-here: "ここにメッセージを入力"
-  send: "送信"
-  attach-from-local: "PCからファイルを添付する"
-  attach-from-drive: "ドライブからファイルを添付する"
-  only-one-file-attached: "メッセージに添付できるのはひとつのファイルのみです"
-common/views/components/messaging-room.message.vue:
-  is-read: "既読"
-  deleted: "このメッセージは削除されました"
 common/views/components/nav.vue:
-  about: "Misskeyについて"
-  stats: "統計"
-  status: "ステータス"
-  wiki: "Wiki"
-  donors: "ドナー"
-  repository: "リポジトリ"
-  develop: "開発者"
-  feedback: "フィードバック"
   terms: "Termos de uso"
-=======
->>>>>>> upstream/develop
 common/views/components/note-menu.vue:
   delete: "Apagar"
 common/views/components/visibility-chooser.vue:
@@ -237,14 +210,7 @@ admin/views/federation.vue:
   followers: "Seguidores"
 desktop/views/pages/welcome.vue:
   timeline: "Timeline"
-<<<<<<< HEAD
-  announcements: "お知らせ"
-  photos: "最近の画像"
   powered-by-misskey: "Hospedado por <a href=\"https://h3z.jp/\" target=\"_blank\">h3zjp</a>"
-  info: "情報"
-=======
-  powered-by-misskey: "Desenvolvido por <b>Misskey</b>."
->>>>>>> upstream/develop
 desktop/views/pages/drive.vue:
   title: "Drive Misskey"
 desktop/views/pages/note.vue:
