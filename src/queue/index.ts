@@ -15,7 +15,7 @@ const queue = initializeQueue();
 
 function initializeQueue() {
 	if (queueAvailable && enableQueue) {
-		return new Queue('misskey', {
+		return new Queue('misskey-queue', {
 			redis: {
 				url: config.redis.url
 			},

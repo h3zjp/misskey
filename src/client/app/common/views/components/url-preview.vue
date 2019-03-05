@@ -1,6 +1,6 @@
 <template>
-<div v-if="player.url" class="player" :style="`padding: ${(player.height || 0) / (player.width || 1) * 100}% 0 0`">
-	<iframe :src="player.url" :width="player.width || '100%'" :heigth="player.height || 250" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen />
+<div v-if="playerEnabled" class="player" :style="`padding: ${(player.height || 0) / (player.width || 1) * 100}% 0 0`">
+	<iframe :src="player.url + (player.url.match(/\?/) ? '&autoplay=1&auto_play=1' : '?autoplay=1&auto_play=1')" :width="player.width || '100%'" :heigth="player.height || 250" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen />
 </div>
 <div v-else-if="tweetUrl && detail" class="twitter">
 	<blockquote ref="tweet" class="twitter-tweet" :data-theme="$store.state.device.darkmode ? 'dark' : null">
@@ -8,8 +8,10 @@
 	</blockquote>
 </div>
 <div v-else class="mk-url-preview">
-	<a :class="{ mini, compact }" :href="url" target="_blank" :title="url" v-if="!fetching">
-		<div class="thumbnail" v-if="thumbnail" :style="`background-image: url('${thumbnail}')`"></div>
+	<a :class="{ mini: narrow, compact }" :href="url" target="_blank" :title="url" v-if="!fetching">
+		<div class="thumbnail" v-if="thumbnail" :style="`background-image: url('${thumbnail}')`">
+			<button v-if="!playerEnabled && player.url" @click.prevent="playerEnabled = true" :title="$t('enable-player')"><fa :icon="['far', 'play-circle']"/></button>
+		</div>
 		<article>
 			<header>
 				<h1 :title="title">{{ title }}</h1>
@@ -26,8 +28,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import i18n from '../../../i18n';
 import { url as misskeyUrl } from '../../../config';
 
+<<<<<<< HEAD
 // THIS IS THE WHITELIST FOR THE EMBED PLAYER
 const whiteList = [
 	'afreecatv.com',
@@ -108,7 +112,10 @@ const whiteList = [
 	'youtu.be'
 ];
 
+=======
+>>>>>>> upstream/develop
 export default Vue.extend({
+	i18n: i18n('common/views/components/url-preview.vue'),
 	props: {
 		url: {
 			type: String,
@@ -126,10 +133,10 @@ export default Vue.extend({
 			required: false,
 			default: false
 		},
+	},
 
-		mini: {
-			type: Boolean,
-			required: false,
+	inject: {
+		narrow: {
 			default: false
 		}
 	},
@@ -148,7 +155,8 @@ export default Vue.extend({
 				height: null
 			},
 			tweetUrl: null,
-			misskeyUrl
+			playerEnabled: false,
+			misskeyUrl,
 		};
 	},
 
@@ -189,9 +197,7 @@ export default Vue.extend({
 				this.icon = info.icon;
 				this.sitename = info.sitename;
 				this.fetching = false;
-				if (whiteList.some(x => x == url.hostname || url.hostname.endsWith(`.${x}`))) {
-					this.player = info.player;
-				}
+				this.player = info.player;
 			})
 		});
 	}
@@ -231,6 +237,17 @@ export default Vue.extend({
 			height 100%
 			background-position center
 			background-size cover
+			display flex
+			justify-content center
+			align-items center
+
+			> button
+				font-size 3.5em
+				opacity: 0.7
+
+				&:hover
+					font-size 4em
+					opacity 0.9
 
 			& + article
 				left 100px
@@ -351,7 +368,7 @@ export default Vue.extend({
 
 			&.compact
 				> .thumbnail
-					position: absolute
+					position absolute
 					width 56px
 					height 100%
 
@@ -369,7 +386,7 @@ export default Vue.extend({
 		&.compact
 			> article
 				> header h1, p, footer
-					overflow: hidden;
-					white-space: nowrap;
-					text-overflow: ellipsis;
+					overflow hidden
+					white-space nowrap
+					text-overflow ellipsis
 </style>

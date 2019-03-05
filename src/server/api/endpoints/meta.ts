@@ -14,6 +14,8 @@ export const meta = {
 		'en-US': 'Get the information of this instance.'
 	},
 
+	tags: ['meta'],
+
 	requireCredential: false,
 
 	params: {
@@ -22,9 +24,57 @@ export const meta = {
 			default: true
 		}
 	},
+
+	res: {
+		type: 'object',
+		properties: {
+			version: {
+				type: 'string',
+				description: 'The version of Misskey of this instance.',
+				example: pkg.version
+			},
+			name: {
+				type: 'string',
+				description: 'The name of this instance.',
+			},
+			description: {
+				type: 'string',
+				description: 'The description of this instance.',
+			},
+			announcements: {
+				type: 'array',
+				items: {
+					type: 'object',
+					properties: {
+						title: {
+							type: 'string',
+							description: 'The title of the announcement.',
+						},
+						text: {
+							type: 'string',
+							description: 'The text of the announcement. (can be HTML)',
+						},
+					}
+				},
+				description: 'The announcements of this instance.',
+			},
+			disableRegistration: {
+				type: 'boolean',
+				description: 'Whether disabled open registration.',
+			},
+			disableLocalTimeline: {
+				type: 'boolean',
+				description: 'Whether disabled LTL and STL.',
+			},
+			disableGlobalTimeline: {
+				type: 'boolean',
+				description: 'Whether disabled GTL.',
+			},
+		}
+	}
 };
 
-export default define(meta, (ps, me) => new Promise(async (res, rej) => {
+export default define(meta, async (ps, me) => {
 	const instance = await fetchMeta();
 
 	const emojis = await Emoji.find({ host: null }, {
@@ -53,7 +103,7 @@ export default define(meta, (ps, me) => new Promise(async (res, rej) => {
 			cores: os.cpus().length
 		},
 
-		broadcasts: instance.broadcasts || [],
+		announcements: instance.announcements || [],
 		disableRegistration: instance.disableRegistration,
 		disableLocalTimeline: instance.disableLocalTimeline,
 		disableGlobalTimeline: instance.disableGlobalTimeline,
@@ -118,5 +168,5 @@ export default define(meta, (ps, me) => new Promise(async (res, rej) => {
 		response.swPrivateKey = instance.swPrivateKey;
 	}
 
-	res(response);
-}));
+	return response;
+});
