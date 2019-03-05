@@ -139,11 +139,8 @@ common/views/components/nav.vue:
   donors: "Donatorer"
   repository: "Kodelager"
   develop: "Utviklere"
-<<<<<<< HEAD
   feedback: "Tilbakemelding"
   terms: "Vilkår for bruk"
-=======
->>>>>>> upstream/develop
 common/views/components/note-menu.vue:
   detail: "Detaljer"
   favorite: "Merket som favoritt"
@@ -370,11 +367,7 @@ admin/views/federation.vue:
     all: "Alle"
 desktop/views/pages/welcome.vue:
   announcements: "Kunngjøringer"
-<<<<<<< HEAD
-  photos: "最近の画像"
   powered-by-misskey: "Hosted by <a href=\"https://h3z.jp/\" target=\"_blank\">h3zjp</a>"
-=======
->>>>>>> upstream/develop
   info: "Informasjon"
 desktop/views/pages/note.vue:
   prev: "Forrige innlegg"
