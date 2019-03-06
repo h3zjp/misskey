@@ -160,6 +160,8 @@ common/views/components/nav.vue:
   terms: "Termos de uso"
 common/views/components/note-menu.vue:
   delete: "Apagar"
+common/views/components/poll-editor.vue:
+  day: "Dom"
 common/views/components/visibility-chooser.vue:
   followers: "Seguidores"
 common/views/components/profile-editor.vue:
