@@ -11,12 +11,8 @@
 			</button>
 		</li>
 	</ul>
-<<<<<<< HEAD
 	<button class="add" v-if="choices.length < 20" @click="add">{{ $t('add') }}</button>
-=======
-	<button class="add" v-if="choices.length < 10" @click="add">{{ $t('add') }}</button>
 	<button class="add" v-else disabled>{{ $t('no-more') }}</button>
->>>>>>> upstream/develop
 	<button class="destroy" @click="destroy" :title="$t('destroy')">
 		<fa icon="times"/>
 	</button>
