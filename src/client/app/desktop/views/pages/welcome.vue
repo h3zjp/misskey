@@ -52,13 +52,15 @@
 			<div class="photos block">
 				<header><fa :icon="['far', 'images']"/> {{ $t('photos') }}</header>
 				<div>
-					<div v-for="photo in photos" :style="`background-image: url(${photo.thumbnailUrl})`"></div>
+						<p>申し訳ありませんが、非表示とさせて頂いております。</p>
+						<p>I'm sorry, but I will not display it.</p>
 				</div>
 			</div>
 
 			<div class="tag-cloud block">
 				<div>
-					<mk-tag-cloud/>
+						<p>申し訳ありませんが、非表示とさせて頂いております。</p>
+						<p>I'm sorry, but I will not display it.</p>
 				</div>
 			</div>
 
@@ -71,7 +73,8 @@
 			<div class="side">
 				<div class="trends block">
 					<div>
-						<mk-trends/>
+						<p>申し訳ありませんが、非表示とさせて頂いております。</p>
+						<p>I'm sorry, but I will not display it.</p>
 					</div>
 				</div>
 
