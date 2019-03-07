@@ -81,8 +81,8 @@
 				<div class="tl block">
 					<header><fa :icon="['far', 'comment-alt']"/> {{ $t('timeline') }}</header>
 					<div>
-						<p>申し訳ありませんが、タイムラインは非表示とさせて頂いております。</p>
-						<p>I'm sorry, but the timeline has been hidden.</p>
+						<p>申し訳ありませんが、非表示とさせて頂いております。</p>
+						<p>I'm sorry, but I will not display it.</p>
 					</div>
 				</div>
 
