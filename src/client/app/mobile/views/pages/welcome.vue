@@ -13,18 +13,6 @@
 		<div class="signin">
 			<a href="/signin" @click.prevent="signin()">{{ $t('@.signin') }}</a>
 		</div>
-		<div class="tl">
-			<p>申し訳ありませんが、非表示とさせて頂いております。</p>
-			<p>I'm sorry, but I will not display it.</p>
-		</div>
-		<div class="hashtags">
-			<p>申し訳ありませんが、非表示とさせて頂いております。</p>
-			<p>I'm sorry, but I will not display it.</p>
-		</div>
-		<div class="photos">
-			<p>申し訳ありませんが、非表示とさせて頂いております。</p>
-			<p>I'm sorry, but I will not display it.</p>
-		</div>
 		<div class="stats" v-if="stats">
 			<span><fa icon="user"/> {{ stats.originalUsersCount | number }}</span>
 			<span><fa icon="pencil-alt"/> {{ stats.originalNotesCount | number }}</span>
