@@ -14,13 +14,16 @@
 			<a href="/signin" @click.prevent="signin()">{{ $t('@.signin') }}</a>
 		</div>
 		<div class="tl">
-			<mk-welcome-timeline/>
+			<p>申し訳ありませんが、非表示とさせて頂いております。</p>
+			<p>I'm sorry, but I will not display it.</p>
 		</div>
 		<div class="hashtags">
-			<mk-tag-cloud/>
+			<p>申し訳ありませんが、非表示とさせて頂いております。</p>
+			<p>I'm sorry, but I will not display it.</p>
 		</div>
 		<div class="photos">
-			<div v-for="photo in photos" :style="`background-image: url(${photo.thumbnailUrl})`"></div>
+			<p>申し訳ありませんが、非表示とさせて頂いております。</p>
+			<p>I'm sorry, but I will not display it.</p>
 		</div>
 		<div class="stats" v-if="stats">
 			<span><fa icon="user"/> {{ stats.originalUsersCount | number }}</span>
