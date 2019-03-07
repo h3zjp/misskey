@@ -52,15 +52,8 @@
 			<div class="photos block">
 				<header><fa :icon="['far', 'images']"/> {{ $t('photos') }}</header>
 				<div>
-						<p>申し訳ありませんが、非表示とさせて頂いております。</p>
-						<p>I'm sorry, but I will not display it.</p>
-				</div>
-			</div>
-
-			<div class="tag-cloud block">
-				<div>
-						<p>申し訳ありませんが、非表示とさせて頂いております。</p>
-						<p>I'm sorry, but I will not display it.</p>
+						<p>非表示!</p>
+						<p>Hidden!</p>
 				</div>
 			</div>
 
@@ -71,13 +64,6 @@
 			</div>
 
 			<div class="side">
-				<div class="trends block">
-					<div>
-						<p>申し訳ありませんが、非表示とさせて頂いております。</p>
-						<p>I'm sorry, but I will not display it.</p>
-					</div>
-				</div>
-
 				<div class="tl block">
 					<header><fa :icon="['far', 'comment-alt']"/> {{ $t('timeline') }}</header>
 					<div>
