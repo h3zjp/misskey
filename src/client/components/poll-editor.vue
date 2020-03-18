@@ -13,7 +13,7 @@
 			</button>
 		</li>
 	</ul>
-	<mk-button class="add" v-if="choices.length < 10" @click="add">{{ $t('add') }}</mk-button>
+	<mk-button class="add" v-if="choices.length < 20" @click="add">{{ $t('add') }}</mk-button>
 	<mk-button class="add" v-else disabled>{{ $t('_poll.noMore') }}</mk-button>
 	<section>
 		<mk-switch v-model="multiple">{{ $t('_poll.canMultipleVote') }}</mk-switch>
