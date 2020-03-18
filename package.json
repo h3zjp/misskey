@@ -1,14 +1,8 @@
 {
 	"name": "misskey",
-<<<<<<< HEAD
-	"author": "syuilo <i@syuilo.com>",
-	"version": "11.32.0-h3zjp-1",
-	"codename": "daybreak",
-=======
 	"author": "syuilo <syuilotan@yahoo.co.jp>",
-	"version": "12.21.0",
+	"version": "12.21.0-h3zjp",
 	"codename": "indigo",
->>>>>>> upstream/develop
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/syuilo/misskey.git"
