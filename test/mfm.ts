@@ -2,14 +2,10 @@
  * Tests of MFM
  *
  * How to run the tests:
- * > npx mocha test/mfm.ts --require ts-node/register
+ * > npx cross-env TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true npx mocha test/mfm.ts --require ts-node/register
  *
  * To specify test:
- * > npx mocha test/mfm.ts --require ts-node/register -g 'test name'
- *
- * If the tests not start, try set following enviroment variables:
- * TS_NODE_FILES=true and TS_NODE_TRANSPILE_ONLY=true
- * for more details, please see: https://github.com/TypeStrong/ts-node/issues/754
+ * > npx cross-env TS_NODE_FILES=true TS_NODE_TRANSPILE_ONLY=true npx mocha test/mfm.ts --require ts-node/register -g 'test name'
  */
 
 import * as assert from 'assert';
@@ -637,6 +633,20 @@ describe('MFM', () => {
 				assert.deepStrictEqual(tokens, [
 					leaf('hashtag', { hashtag: 'foo' }),
 					text('/bar'),
+				]);
+			});
+
+			it('ignore Keycap Number Sign (U+0023 + U+20E3)', () => {
+				const tokens = parse('#⃣');
+				assert.deepStrictEqual(tokens, [
+					leaf('emoji', { emoji: '#⃣' })
+				]);
+			});
+
+			it('ignore Keycap Number Sign (U+0023 + U+FE0F + U+20E3)', () => {
+				const tokens = parse('#️⃣');
+				assert.deepStrictEqual(tokens, [
+					leaf('emoji', { emoji: '#️⃣' })
 				]);
 			});
 		});

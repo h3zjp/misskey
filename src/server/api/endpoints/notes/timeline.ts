@@ -7,6 +7,9 @@ import { generateVisibilityQuery } from '../../common/generate-visibility-query'
 import { generateMuteQuery } from '../../common/generate-mute-query';
 import { activeUsersChart } from '../../../../services/chart';
 import { Brackets } from 'typeorm';
+import { generateRepliesQuery } from '../../common/generate-replies-query';
+import { injectPromo } from '../../common/inject-promo';
+import { injectFeatured } from '../../common/inject-featured';
 
 export const meta = {
 	desc: {
@@ -16,7 +19,7 @@ export const meta = {
 
 	tags: ['notes'],
 
-	requireCredential: true,
+	requireCredential: true as const,
 
 	params: {
 		limit: {
@@ -113,6 +116,7 @@ export default define(meta, async (ps, user) => {
 		.leftJoinAndSelect('note.user', 'user')
 		.setParameters(followingQuery.getParameters());
 
+	generateRepliesQuery(query, user);
 	generateVisibilityQuery(query, user);
 	generateMuteQuery(query, user);
 
@@ -152,6 +156,9 @@ export default define(meta, async (ps, user) => {
 	//#endregion
 
 	const timeline = await query.take(ps.limit!).getMany();
+
+	await injectPromo(timeline, user);
+	await injectFeatured(timeline, user);
 
 	process.nextTick(() => {
 		if (user) {
