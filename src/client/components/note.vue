@@ -33,7 +33,7 @@
 		<mk-avatar class="avatar" :user="appearNote.user"/>
 		<div class="main">
 			<x-note-header class="header" :note="appearNote" :mini="true"/>
-			<div class="body" v-if="appearNote.deletedAt == null">
+			<div class="body" v-if="appearNote.deletedAt == null" ref="noteBody">
 				<p v-if="appearNote.cw != null" class="cw">
 				<mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$store.state.i" :custom-emojis="appearNote.emojis" />
 					<x-cw-button v-model="showContent" :note="appearNote"/>
@@ -46,10 +46,10 @@
 						<a class="rp" v-if="appearNote.renote != null">RN:</a>
 					</div>
 					<div class="files" v-if="appearNote.files.length > 0">
-						<x-media-list :media-list="appearNote.files"/>
+						<x-media-list :media-list="appearNote.files" :parent-element="noteBody"/>
 					</div>
 					<x-poll v-if="appearNote.poll" :note="appearNote" ref="pollViewer"/>
-					<x-url-preview v-for="url in urls" :url="url" :key="url" :compact="true" class="url-preview"/>
+					<mk-url-preview v-for="url in urls" :url="url" :key="url" :compact="true" class="url-preview"/>
 					<div class="renote" v-if="appearNote.renote"><x-note-preview :note="appearNote.renote"/></div>
 				</div>
 			</div>
@@ -79,14 +79,14 @@
 			<div class="deleted" v-if="appearNote.deletedAt != null">{{ $t('deleted') }}</div>
 		</div>
 	</article>
-	<x-sub v-for="note in replies" :key="note.id" :note="note"/>
+	<x-sub v-for="note in replies" :key="note.id" :note="note" class="reply"/>
 </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { faBolt, faTimes, faBullhorn, faStar, faLink, faExternalLinkSquareAlt, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan, faQuoteRight, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { faCopy, faTrashAlt, faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { faCopy, faTrashAlt, faEdit, faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { parse } from '../../mfm/parse';
 import { sum, unique } from '../../prelude/array';
 import i18n from '../i18n';
@@ -97,7 +97,7 @@ import XReactionsViewer from './reactions-viewer.vue';
 import XMediaList from './media-list.vue';
 import XCwButton from './cw-button.vue';
 import XPoll from './poll.vue';
-import XUrlPreview from './url-preview.vue';
+import MkUrlPreview from './url-preview.vue';
 import MkReactionPicker from './reaction-picker.vue';
 import pleaseLogin from '../scripts/please-login';
 import { focusPrev, focusNext } from '../scripts/focus';
@@ -115,7 +115,7 @@ export default Vue.extend({
 		XMediaList,
 		XCwButton,
 		XPoll,
-		XUrlPreview,
+		MkUrlPreview,
 	},
 
 	props: {
@@ -142,7 +142,8 @@ export default Vue.extend({
 			replies: [],
 			showContent: false,
 			hideThisNote: false,
-			faBolt, faTimes, faBullhorn, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan
+			noteBody: this.$refs.noteBody,
+			faEdit, faBolt, faTimes, faBullhorn, faPlus, faMinus, faRetweet, faReply, faReplyAll, faEllipsisH, faHome, faUnlock, faEnvelope, faThumbtack, faBan
 		};
 	},
 
@@ -254,6 +255,8 @@ export default Vue.extend({
 		if (this.$store.getters.isSignedIn) {
 			this.connection.on('_connected_', this.onStreamConnected);
 		}
+
+		this.noteBody = this.$refs.noteBody
 	},
 
 	beforeDestroy() {
@@ -300,6 +303,14 @@ export default Vue.extend({
 			switch (type) {
 				case 'reacted': {
 					const reaction = body.reaction;
+
+					if (body.emoji) {
+						const emojis = this.appearNote.emojis || [];
+						if (!emojis.includes(body.emoji)) {
+							emojis.push(body.emoji);
+							Vue.set(this.appearNote, 'emojis', emojis);
+						}
+					}
 
 					if (this.appearNote.reactions == null) {
 						Vue.set(this.appearNote, 'reactions', {});
@@ -460,6 +471,22 @@ export default Vue.extend({
 			});
 		},
 
+		delEdit() {
+			this.$root.dialog({
+				type: 'warning',
+				text: this.$t('deleteAndEditConfirm'),
+				showCancelButton: true
+			}).then(({ canceled }) => {
+				if (canceled) return;
+
+				this.$root.api('notes/delete', {
+					noteId: this.appearNote.id
+				});
+
+				this.$root.post({ initialNote: this.appearNote, renote: this.appearNote.renote, reply: this.appearNote.reply });
+			});
+		},
+
 		toggleFavorite(favorite: boolean) {
 			this.$root.api(favorite ? 'notes/favorites/create' : 'notes/favorites/delete', {
 				noteId: this.appearNote.id
@@ -501,11 +528,11 @@ export default Vue.extend({
 					icon: faLink,
 					text: this.$t('copyLink'),
 					action: this.copyLink
-				}, this.appearNote.uri ? {
+				}, (this.appearNote.url || this.appearNote.uri) ? {
 					icon: faExternalLinkSquareAlt,
 					text: this.$t('showOnRemote'),
 					action: () => {
-						window.open(this.appearNote.uri, '_blank');
+						window.open(this.appearNote.url || this.appearNote.uri, '_blank');
 					}
 				} : undefined,
 				null,
@@ -545,8 +572,13 @@ export default Vue.extend({
 					}]
 					: []
 				),
-				...(this.appearNote.userId == this.$store.state.i.id ? [
+				...(this.appearNote.userId == this.$store.state.i.id || this.$store.state.i.isModerator || this.$store.state.i.isAdmin ? [
 					null,
+					this.appearNote.userId == this.$store.state.i.id ? {
+						icon: faEdit,
+						text: this.$t('deleteAndEdit'),
+						action: this.delEdit
+					} : undefined,
 					{
 						icon: faTrashAlt,
 						text: this.$t('delete'),
@@ -564,11 +596,11 @@ export default Vue.extend({
 					icon: faLink,
 					text: this.$t('copyLink'),
 					action: this.copyLink
-				}, this.appearNote.uri ? {
+				}, (this.appearNote.url || this.appearNote.uri) ? {
 					icon: faExternalLinkSquareAlt,
 					text: this.$t('showOnRemote'),
 					action: () => {
-						window.open(this.appearNote.uri, '_blank');
+						window.open(this.appearNote.url || this.appearNote.uri, '_blank');
 					}
 				} : undefined]
 				.filter(x => x !== undefined);
@@ -750,14 +782,6 @@ export default Vue.extend({
 		opacity: 1;
 	}
 
-	> *:first-child {
-		border-radius: var(--radius) var(--radius) 0 0;
-	}
-
-	> *:last-child {
-		border-radius: 0 0 var(--radius) var(--radius);
-	}
-
 	> .info {
 		display: flex;
 		align-items: center;
@@ -783,6 +807,11 @@ export default Vue.extend({
 
 	> .info + .article {
 		padding-top: 8px;
+	}
+
+	> .reply-to {
+		opacity: 0.7;
+		padding-bottom: 0;
 	}
 
 	> .renote {
@@ -937,6 +966,10 @@ export default Vue.extend({
 				opacity: 0.7;
 			}
 		}
+	}
+
+	> .reply {
+		border-top: solid 1px var(--divider);
 	}
 }
 </style>

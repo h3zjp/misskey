@@ -1,9 +1,251 @@
 ChangeLog
 =========
 
+Next
+-------------------
+### ✨Improvements
+* Node.js v14をサポート [#6294](https://github.com/syuilo/misskey/pull/6294)
+* 依存パッケージを最新に [#6297](https://github.com/syuilo/misskey/pull/6297)
+* nginxサンプルのSSL/TLS設定の変更 [#6298](https://github.com/syuilo/misskey/pull/6298)
+* DockerイメージでPostgreSQL v12・Node.js v14を使用するように [2bb0a61](https://github.com/syuilo/misskey/commit/2bb0a61a891445df4d78bfc0d4a64551ac9b7a39), [808c680](https://github.com/syuilo/misskey/commit/808c6801843b9e10fa575f5f7fbd3a4a3a80252a)
+* ファイル名をkebab-caseに統一 [69975c2](https://github.com/syuilo/misskey/commit/69975c2fdd1cfa12d86eb51ce0769f17ffd826a5)
+
+### 🐛Fixes
+- CatだとMFMでURLプレビューを隠しても表示される問題を修正 [7d7c206](https://github.com/syuilo/misskey/commit/7d7c206f245387d32283fbb4e82bd9d526427936)
+- id生成ルーチンにInvald Dateが入力されるとNaN付きのidが生成される [ebdbd6a](https://github.com/syuilo/misskey/commit/ebdbd6a84a39e9b0d9d1cb80b6c340f4f58977fd)
+
+12.36.1 (2020/4/23)
+-------------------
+### 🐛Fixes
+* Pagesのifブロックが機能しない [2ee5835](https://github.com/syuilo/misskey/commit/2ee583518608333312caa4c4303a74835b087069)
+* AiScriptのアップデート
+
+12.36.0 (2020/4/22)
+-------------------
+### ✨Improvements
+* ドライブの画面を広く [1f99816](https://github.com/syuilo/misskey/commit/1f998168e2f6ff94d0119fe5f95ad03b47d19d60)
+* ドライブのデフォルトのアップロード先フォルダを設定できるように [1f99816](https://github.com/syuilo/misskey/commit/1f998168e2f6ff94d0119fe5f95ad03b47d19d60)
+* AiScriptのアップデート
+* Webpackを5に [e72011f](https://github.com/syuilo/misskey/commit/e72011f1dafc11ea70dd60b653d25b0e48832cce)
+
+### 🐛Fixes
+* WebUIでアンテナを保存するとexcludeKeywordsに空文字列が入るせいで動かない [5a9530c](https://github.com/syuilo/misskey/commit/5a9530ccd4249cf37d50769015adbffba34014ab)
+* 管理画面のカスタム絵文字でカテゴリが空だと更新できない [0df3e22](https://github.com/syuilo/misskey/commit/0df3e22e519d854c88ae8f5eabdc8eee4b18aeed)
+
+12.35.2 (2020/4/19)
+-------------------
+### ✨Improvements
+* Pagesの環境変数を調整 [0a1b83c](https://github.com/syuilo/misskey/commit/0a1b83c70fc546d7514176a220e1381ecc0b13ec)
+* Pagesのチャートを調整 [f704e7a](https://github.com/syuilo/misskey/commit/f704e7a6025cb3f8ec7e474df70de1b171722bde)
+* AiScriptのアップデート
+* デザインの調整
+
+### 🐛Fixes
+* 画像のみのノートができない問題を修正 [8cefcaa](https://github.com/syuilo/misskey/commit/8cefcaa55f86e03f3965c5cb419787778681c269)
+
+12.35.1 (2020/4/19)
+-------------------
+### 🐛Fixes
+* Pagesのチャート描画を調整
+
+12.35.0 (2020/4/19)
+-------------------
+### ✨Improvements
+* Pagesでチャートを描画できるように
+* Pagesでキャンバスの画像を投稿フォームで添付できるように
+* AiScriptのバージョンアップ
+
+### 🐛Fixes
+* タイムラインウィジェットの数が多ければ多いほど、リアクションが多く付いて見える問題を修正
+* カスタム絵文字リアクションがプレビューされない不具合を修正
+
+12.34.0 (2020/4/17)
+-------------------
+### ✨Improvements
+* Pagesでrectメソッドを追加
+* AiScriptのバージョンアップ
+
+12.33.0 (2020/4/16)
+-------------------
+### ✨Improvements
+* Pagesで円を書くメソッドを追加
+* AiScriptのバージョンアップ
+
+### 🐛Fixes
+* PagesでAiScript変数があると編集が機能しなくなる問題を修正
+
+12.32.0 (2020/4/16)
+-------------------
+### ✨Improvements
+* Pagesで画像を描画できるように
+* AiScriptのバージョンアップ
+* 0以下のリアクションは送らないように
+
+### 🐛Fixes
+* リアクションの修正
+* Fix Media List in CW Content
+
+12.31.0 (2020/4/14)
+-------------------
+### ✨Improvements
+* プロキシの除外ホスト指定とオブジェクトストレージへの適用を除外するオプション
+* AiScript
+* モデレーション関連機能
+* sensitiveではないメディアも非表示にできるように
+* 投稿のURLプレビューポップアップを改良
+* リモートのカスタム絵文字リアクションを表示できるように
+
+### 🐛Fixes
+* リアクションカウントがおかしくなることがあるのを修正
+
+12.30.0 (2020/4/11)
+-------------------
+### ✨Improvements
+* リクエストライブラリをrequestからnode-fetchに変更
+* オブジェクトストレージのhttpスキーマリクエストでもProxyが適用されるように
+* DNSキャッシュとKeep-Alive適用箇所を増やす
+* ドイツ語と中国語（繁体）を有効に
+* NSFWを再度隠せるように
+* Implement AiScript scratchpad (/scratchpad)
+
+### 🐛Fixes
+* APのurl処理の修正
+
+12.29.0 (2020/4/5)
+-------------------
+### ✨Improvements
+* トークン系の乱数ソースではcryptoを使うように
+* broadcast stream が追加され emojiAdded イベントをサポート
+* APIリファレンスの高速化等
+* Ability to set header image for a Page
+* ログの改善
+
+### 🐛Fixes
+* アプリ一覧に1回も使用していないアプリが表示されないのを修正
+* admin/accounts/createで一般ユーザーがアカウントを作成し放題なのを修正
+* 翻訳の未適用箇所を修正
+* APIの権限設定漏れを修正
+* インストール直後にアクティビティが飛んで来たりするともう初期管理者セットアップがができなくなるのを修正
+* リモート投稿でurlがあればそちらをリンクするように修正
+
+12.28.0 (2020/3/29)
+-------------------
+### ✨Improvements
+* インストールされたアプリのページでアプリの権限を確認できるように
+* API: api/meta.features.miauthを追加  
+  MiAuthに対応しているかどうかを確認するために利用できます。  
+  値はつねにtrueを取ります。
+* インスタンス一覧でソートできるように 
+
+12.27.1 (2020/03/28)
+-------------------
+
+### ✨Improvements
+* MiAuthのバグを修正
+
+12.27.0 (2020/03/28)
+-------------------
+
+### ✨Improvements
+* サードパーティーアプリケーションの認証方法にMiAuthを追加 ([Misskey API ドキュメント](https://github.com/syuilo/misskey/blob/b8088dc01a0c53b264c0697082ff5b16b06c4cda/src/docs/api.ja-JP.md#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%81%97%E3%81%A6%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3%E3%82%92%E5%8F%96%E5%BE%97%E3%81%99%E3%82%8B))  
+  従来の、API `app/create` => `auth/session/generate` => `auth/session/userkey` を使用する方法は依然として使用可能です。  
+UIからアプリを作成する画面 (`/dev/apps`) は廃止されました、同等の操作を行いたい場合は API `app/create` で可能です。  
+  MiAuthに対応しているかどうかは`api/meta.features.miauth`で確認できます（12.28.0～）。
+* テーマをインポートする前にプレビューできるように
+* アプリから通知を作成できるように
+* インストールしたアプリを見たり削除したりできるように
+
+12.26.0 (2020/03/25)
+-------------------
+
+### ✨Improvements
+* ロゴが新しく
+* インスタンス設定の「ユーザー」が登録の逆順で表示されるように
+
+### 🐛Fixes
+* 新規登録フォームの「利用規約」のリンク色が通常の文字と同じだった問題を修正
+* ダークモードの同期の問題を修正
+
+12.25.0 (2020/03/24)
+-------------------
+
+### ✨Improvements
+* テーマインポート機能を実装
+
+### 🐛Fixes
+* 誰もフォローしていないときにタイムラインの読み込みが遅い問題を修正
+
+
+12.24.2 (2020/03/22)
+-------------------
+
+### 🐛Fixes
+* ダークモードの同期を修正
+
+12.24.1 (2020/03/22)
+-------------------
+
+### ✨Improvements
+* SVG形式のアイコンファイルを追加
+
+### 🐛Fixes
+* iOSで起動できない問題を修正
+* Pages画面にタイトルがない問題を修正
+
+12.24.0 (2020/03/22)
+-------------------
+
+### ✨Improvements
+* クライアント設定にアカウント設定へのリンクを追加
+* ダークモードの同期を強化
+
+### 🐛Fixes
+* 画面が小さいとメニューがすべて見えない問題を修正
+
+12.23.0 (2020/03/22)
+-------------------
+
+### ✨Improvements
+* 削除して編集できるように
+* 基底テーマ分離
+* 端末がダークモードか否かでテーマを切り替えられるように
+
+### 🐛Fixes
+* ユーザー名のサジェストをアクティブであるユーザー順に表示するのがうまくいっていないのを修正
+* 招待コードが発行できない問題を修正
+* CIが通らない問題を修正
+
+12.22.0 (2020/03/21)
+-------------------
+
+### ✨Improvements
+* Web UI のデザインを大幅に変更
+* 通知のポップアップ表示を廃止
+* リモートユーザーであっても投稿数、フォロー・フォロワー数を表示
+* リモートユーザーであるという警告を投稿ページでも表示
+* ユーザー名のサジェストをアクティブであるユーザー順に表示
+* 通知音の音量スライダーなど、スライダーへのデザイン適用
+* リアクション設定機能を刷新
+* 同じホットキーが連続で発動しないように
+* 同じノートを何回リノートしても一回として数えるように
+* ElasticSearch で認証ができるように
+
+### 🐛Fixes
+
+* ユーザー名を設定していないユーザーのノートページのタイトルが「のノート」になる問題を修正
+* ソーシャルアカウントでの連携ログインができない問題を修正
+* アプリ認証画面でログインしたときに正常に遷移できない問題を修正
+* オブジェクトストレージでS3のvirtual-host形式のサポートなど
+* GIF 画像のバッジの色合いを修正
+* ノートのテキストがMFMの使い方によってははみ出る問題を修正
+* ダークテーマ利用時にセレクトが使いにくくなる問題を修正
+* ボリュームを0にしてもサウンドが鳴動している問題を修正
+* 検索窓のスタイルが適用されていなかった問題を修正
+
 12.21.0 (2020/02/23)
 -------------------
 ### ✨Improvements
+* タイムラインに挿入されるおすすめノートに自分がリアクションしたものは含めないように
 * ノートのメニューに詳細ページへのリンクを追加
 * UIの調整
 
