@@ -395,5 +395,13 @@
 	{
 		id: 'energy-drink',
 		place: "floor",
-	}
+	},
+	{
+		id: 'doll-ai',
+		place: "floor",
+	},
+	{
+		id: 'banknote',
+		place: "floor",
+	},
 ]

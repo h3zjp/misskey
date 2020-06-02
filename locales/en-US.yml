@@ -502,6 +502,11 @@ sidebar: "Sidebar"
 divider: "Divider"
 addItem: "Add Item"
 rooms: "Room"
+relays: "Relays"
+addRelay: "Add Relay"
+inboxUrl: "Inbox URL"
+addedRelays: "Added Relays"
+serviceworkerInfo: "Must be enabled for push notifications."
 _theme:
   explore: "Explore Themes"
   install: "Install theme"
@@ -776,6 +781,8 @@ _rooms:
     cup-noodle: "Cup noodle"
     holo-display: "Holographic display"
     energy-drink: "Energy drink"
+    doll-ai: "Ai doll"
+    banknote: "Pile of money"
 _pages:
   newPage: "Create a page"
   editPage: "Edit this page"
@@ -1057,3 +1064,10 @@ _pages:
     enviromentVariables: "Environment variable"
     pageVariables: "Page element"
     argVariables: "Input slot"
+_relayStatus:
+  requesting: "Pending"
+  accepted: "Accepted"
+  rejected: "Rejected"
+_notification:
+  youWereFollowed: "Followed you"
+  youWereInvitedToGroup: "Invited to group"
