@@ -16,9 +16,9 @@ html
 		link(rel='icon' href= icon || '/favicon.ico')
 		link(rel='apple-touch-icon' href= icon || '/apple-touch-icon.png')
 		link(rel='manifest' href='/manifest.json')
-		link(rel='prefetch' href='https://xn--931a.moe/assets/info.jpg')
-		link(rel='prefetch' href='https://xn--931a.moe/assets/not-found.jpg')
-		link(rel='prefetch' href='https://xn--931a.moe/assets/error.jpg')
+		link(rel='prefetch' href='https://media.h3z.jp/img/msky/info.jpg')
+		link(rel='prefetch' href='https://media.h3z.jp/img/msky/not-found.jpg')
+		link(rel='prefetch' href='https://media.h3z.jp/img/msky/error.jpg')
 
 		title
 			block title
@@ -62,10 +62,12 @@ html
 			}
 
 	body
+		script(type='text/javascript' src='https://app.h3z.jp/logging/msky/script.js' defer)
 		noscript: p
-			| JavaScriptを有効にしてください
+			| JavaScriptを有効にして下さい
 			br
 			| Please turn on your JavaScript
+			img(src='https://app.h3z.jp/logging/msky/logging.php' alt='' width='1' height='1')
 		div#ini.
 			<svg viewBox="0 0 50 50">
 				<path d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" />
