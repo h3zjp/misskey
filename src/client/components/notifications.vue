@@ -1,7 +1,7 @@
 <template>
 <div class="mfcuwfyp">
 	<x-list class="notifications" :items="items" v-slot="{ item: notification }">
-		<x-note v-if="['reply', 'quote', 'mention'].includes(notification.type)" :note="notification.note" :key="notification.id"/>
+		<x-note v-if="['reply', 'quote', 'mention'].includes(notification.type)" :note="notification.note" @updated="noteUpdated(notification.note, $event)" :key="notification.id"/>
 		<x-notification v-else :notification="notification" :with-time="true" :full="true" class="_panel notification" :key="notification.id"/>
 	</x-list>
 
@@ -17,11 +17,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import paging from '../scripts/paging';
 import XNotification from './notification.vue';
 import XList from './date-separated-list.vue';
 import XNote from './note.vue';
+import { notificationTypes } from '../../types';
 
 export default Vue.extend({
 	components: {
@@ -35,9 +36,10 @@ export default Vue.extend({
 	],
 
 	props: {
-		type: {
-			type: String,
-			required: false
+		includeTypes: {
+			type: Array as PropType<typeof notificationTypes[number][]>,
+			required: false,
+			default: null,
 		},
 	},
 
@@ -48,15 +50,26 @@ export default Vue.extend({
 				endpoint: 'i/notifications',
 				limit: 10,
 				params: () => ({
-					includeTypes: this.type ? [this.type] : undefined
+					includeTypes: this.allIncludeTypes || undefined,
 				})
 			},
 		};
 	},
 
+	computed: {
+		allIncludeTypes() {
+			return this.includeTypes ?? notificationTypes.filter(x => !this.$store.state.i.mutingNotificationTypes.includes(x));
+		}
+	},
+
 	watch: {
-		type() {
+		includeTypes() {
 			this.reload();
+		},
+		'$store.state.i.mutingNotificationTypes'() {
+			if (this.includeTypes === null) {
+				this.reload();
+			}
 		}
 	},
 
@@ -71,15 +84,27 @@ export default Vue.extend({
 
 	methods: {
 		onNotification(notification) {
-			if (document.visibilityState === 'visible') {
+			const isMuted = !this.allIncludeTypes.includes(notification.type);
+			if (isMuted || document.visibilityState === 'visible') {
 				this.$root.stream.send('readNotification', {
 					id: notification.id
 				});
-
-				notification.isRead = true;
 			}
 
-			this.prepend(notification);
+			if (!isMuted) {
+				this.prepend({
+					...notification,
+					isRead: document.visibilityState === 'visible'
+				});
+			}
+		},
+
+		noteUpdated(oldValue, newValue) {
+			const i = this.items.findIndex(n => n.note === oldValue);
+			Vue.set(this.items, i, {
+				...this.items[i],
+				note: newValue
+			});
 		},
 	}
 });

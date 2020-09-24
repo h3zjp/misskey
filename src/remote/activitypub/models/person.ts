@@ -15,7 +15,7 @@ import { updateUsertags } from '../../../services/update-hashtag';
 import { Users, UserNotePinings, Instances, DriveFiles, Followings, UserProfiles, UserPublickeys } from '../../../models';
 import { User, IRemoteUser } from '../../../models/entities/user';
 import { Emoji } from '../../../models/entities/emoji';
-import { UserNotePining } from '../../../models/entities/user-note-pinings';
+import { UserNotePining } from '../../../models/entities/user-note-pining';
 import { genId } from '../../../misc/gen-id';
 import { instanceChart, usersChart } from '../../../services/chart';
 import { UserPublickey } from '../../../models/entities/user-publickey';
@@ -26,7 +26,7 @@ import { validActor } from '../../../remote/activitypub/type';
 import { getConnection } from 'typeorm';
 import { ensure } from '../../../prelude/ensure';
 import { toArray } from '../../../prelude/array';
-import { fetchNodeinfo } from '../../../services/fetch-nodeinfo';
+import { fetchInstanceMetadata } from '../../../services/fetch-instance-metadata';
 
 const logger = apLogger;
 
@@ -204,7 +204,7 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 	registerOrFetchInstanceDoc(host).then(i => {
 		Instances.increment({ id: i.id }, 'usersCount', 1);
 		instanceChart.newUser(i.host);
-		fetchNodeinfo(i);
+		fetchInstanceMetadata(i);
 	});
 
 	usersChart.update(user!, true);

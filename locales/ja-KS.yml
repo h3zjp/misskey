@@ -295,6 +295,7 @@ proxyRemoteFilesDescription: "この設定を入れると、保存しとらん�
 driveCapacityPerLocalAccount: "ローカルユーザーひとりあたりのドライブ容量"
 driveCapacityPerRemoteAccount: "リモートユーザーひとりあたりのドライブ容量"
 inMb: "メガバイト単位"
+recaptcha: "reCAPTCHA"
 avoidMultiCaptchaConfirm: "ぎょうさんのCaptchaをつこてしまうと、仲良うせんことがあるんや。他のCaptchaをなおしとこか？別にキャンセルしてもろうたらCaptchaは消されへんで済むけど知らんで。"
 antennas: "アンテナ"
 manageAntennas: "アンテナいじる"
@@ -347,11 +348,15 @@ unregister: "登録やめる"
 passwordLessLogin: "パスワード無くてもログインできるようにする"
 resetPassword: "パスワードをリセット"
 newPasswordIs: "今度のパスワードは「{password}」や"
-autoReloadWhenDisconnected: "サーバーが調子悪いときには自動でリロードしたる"
 notFoundDescription: "指定されたURLに該当するページはあらへんやった。"
 close: "さいなら"
 joinedGroups: "参加しとるグループ"
 invites: "来てや"
+smtpHost: "ホスト"
+smtpUser: "ユーザー名"
+smtpPass: "パスワード"
+_sidebar:
+  icon: "アイコン"
 _theme:
   keys:
     renote: "Renote"
@@ -386,6 +391,7 @@ _widgets:
   notifications: "通知"
   timeline: "タイムライン"
   activity: "アクティビティ"
+  federation: "連合"
 _cw:
   show: "もっとあるやろ！"
 _poll:
@@ -434,6 +440,11 @@ _pages:
       array: "リスト"
 _notification:
   youWereFollowed: "フォローされたで"
+  _types:
+    follow: "フォロー"
+    renote: "Renote"
+    quote: "引用"
+    reaction: "リアクション"
 _deck:
   _columns:
     notifications: "通知"

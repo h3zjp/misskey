@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import * as nestedProperty from 'nested-property';
-import { faTerminal, faHashtag, faBroadcastTower, faFireAlt, faSearch, faStar, faAt, faListUl, faUserClock, faUsers, faCloud, faGamepad, faFileAlt, faSatellite, faDoorClosed, faColumns } from '@fortawesome/free-solid-svg-icons';
+import { faSatelliteDish, faTerminal, faHashtag, faBroadcastTower, faFireAlt, faSearch, faStar, faAt, faListUl, faUserClock, faUsers, faCloud, faGamepad, faFileAlt, faSatellite, faDoorClosed, faColumns } from '@fortawesome/free-solid-svg-icons';
 import { faBell, faEnvelope, faComments } from '@fortawesome/free-regular-svg-icons';
 import { AiScript, utils, values } from '@syuilo/aiscript';
 import { apiUrl, deckmode } from './config';
@@ -18,6 +18,7 @@ export const defaultSettings = {
 	pastedFileName: 'yyyy-MM-dd HH-mm-ss [{{number}}]',
 	memo: null,
 	reactions: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
+	mutedWords: [],
 };
 
 export const defaultDeviceUserSettings = {
@@ -44,7 +45,14 @@ export const defaultDeviceUserSettings = {
 		columns: [],
 		layout: [],
 	},
-	plugins: [],
+	plugins: [] as {
+		id: string;
+		name: string;
+		active: boolean;
+		configData: Record<string, any>;
+		token: string;
+		ast: any[];
+	}[],
 };
 
 export const defaultDeviceSettings = {
@@ -52,7 +60,7 @@ export const defaultDeviceSettings = {
 	loadRawImages: false,
 	alwaysShowNsfw: false,
 	useOsNativeEmojis: false,
-	autoReload: false,
+	serverDisconnectedBehavior: 'quiet',
 	accounts: [],
 	recentEmojis: [],
 	themes: [],
@@ -69,6 +77,7 @@ export const defaultDeviceSettings = {
 	enableInfiniteScroll: true,
 	fixedWidgetsPosition: false,
 	useBlurEffectForModal: true,
+	sidebarDisplay: 'full', // full, icon, hide
 	roomGraphicsQuality: 'medium',
 	roomUseOrthographicCamera: true,
 	deckColumnAlign: 'left',
@@ -81,6 +90,7 @@ export const defaultDeviceSettings = {
 	sfxChat: 'syuilo/pope1',
 	sfxChatBg: 'syuilo/waon',
 	sfxAntenna: 'syuilo/triple',
+	sfxChannel: 'syuilo/square-pico',
 	userData: {},
 };
 
@@ -97,12 +107,15 @@ export default () => new Vuex.Store({
 		i: null,
 		pendingApiRequestsCount: 0,
 		spinner: null,
+		fullView: false,
 
 		// Plugin
 		pluginContexts: new Map<string, AiScript>(),
 		postFormActions: [],
 		userActions: [],
 		noteActions: [],
+		noteViewInterruptors: [],
+		notePostInterruptors: [],
 	},
 
 	getters: {
@@ -201,6 +214,11 @@ export default () => new Vuex.Store({
 				get show() { return getters.isSignedIn; },
 				to: '/my/pages',
 			},
+			channels: {
+				title: 'channel',
+				icon: faSatelliteDish,
+				to: '/channels',
+			},
 			games: {
 				title: 'games',
 				icon: faGamepad,
@@ -237,6 +255,10 @@ export default () => new Vuex.Store({
 			state.i[key] = value;
 		},
 
+		setFullView(state, v) {
+			state.fullView = v;
+		},
+
 		initPlugin(state, { plugin, aiscript }) {
 			state.pluginContexts.set(plugin.id, aiscript);
 		},
@@ -263,6 +285,22 @@ export default () => new Vuex.Store({
 			state.noteActions.push({
 				title, handler: (note) => {
 					state.pluginContexts.get(pluginId).execFn(handler, [utils.jsToVal(note)]);
+				}
+			});
+		},
+
+		registerNoteViewInterruptor(state, { pluginId, handler }) {
+			state.noteViewInterruptors.push({
+				handler: (note) => {
+					return state.pluginContexts.get(pluginId).execFn(handler, [utils.jsToVal(note)]);
+				}
+			});
+		},
+
+		registerNotePostInterruptor(state, { pluginId, handler }) {
+			state.notePostInterruptors.push({
+				handler: (note) => {
+					return state.pluginContexts.get(pluginId).execFn(handler, [utils.jsToVal(note)]);
 				}
 			});
 		},
@@ -587,9 +625,11 @@ export default () => new Vuex.Store({
 				},
 				//#endregion
 
-				installPlugin(state, { meta, ast, token }) {
+				installPlugin(state, { id, meta, ast, token }) {
 					state.plugins.push({
 						...meta,
+						id,
+						active: true,
 						configData: {},
 						token: token,
 						ast: ast
@@ -602,6 +642,10 @@ export default () => new Vuex.Store({
 
 				configPlugin(state, { id, config }) {
 					state.plugins.find(p => p.id === id).configData = config;
+				},
+
+				changePluginActive(state, { id, active }) {
+					state.plugins.find(p => p.id === id).active = active;
 				},
 			}
 		},
