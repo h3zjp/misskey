@@ -164,5 +164,5 @@ export default () => new Promise(resolve => {
 		}
 	});
 
-	server.listen(config.port, resolve);
+	server.listen(config.port, config.bind, resolve);
 });

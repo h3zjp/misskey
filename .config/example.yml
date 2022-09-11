@@ -28,6 +28,7 @@ url: https://example.tld/
 #   because tokens may be transferred in GET requests.
 
 # The port that your Misskey server should listen on.
+bind: 127.0.0.1
 port: 3000
 
 #   ┌──────────────────────────┐
