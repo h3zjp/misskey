@@ -354,7 +354,7 @@ export class Meta {
 
 	@Column('varchar', {
 		length: 512,
-		default: 'https://github.com/misskey-dev/misskey',
+		default: 'https://github.com/h3zjp/misskey',
 		nullable: false,
 	})
 	public repositoryUrl: string;

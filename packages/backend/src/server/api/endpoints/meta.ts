@@ -57,7 +57,7 @@ export const meta = {
 			repositoryUrl: {
 				type: 'string',
 				optional: false, nullable: false,
-				default: 'https://github.com/misskey-dev/misskey',
+				default: 'https://github.com/h3zjp/misskey',
 			},
 			feedbackUrl: {
 				type: 'string',
