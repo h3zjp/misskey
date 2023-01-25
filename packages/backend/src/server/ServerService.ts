@@ -197,6 +197,6 @@ export class ServerService {
 			}
 		});
 
-		fastify.listen({ port: this.config.port, this.config.bind });
+		fastify.listen({ port: this.config.port, host: this.config.bind });
 	}
 }
