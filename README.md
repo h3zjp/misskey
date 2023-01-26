@@ -26,9 +26,9 @@
 <div>
 
 ## Fork 元との変更点 / Changes from Fork original
-- Listen IP を指定可能に / Listen IP can be specified
-- 標準フォントに [Koruri Font](https://koruri.github.io/) を採用 / [Koruri Font](https://koruri.github.io/) is used as the default font
-- 上記以外は素のソースです / Other than the above, this is the bare source
+- Listen IP を指定可能に / Listen IP can be specified.
+- 標準フォントに [Koruri Font](https://koruri.github.io/) を採用 / [Koruri Font](https://koruri.github.io/) is used as the default font.
+- 上記以外は素のソースです / Other than the above, this is the bare source.
 
 </div>
 
@@ -46,6 +46,7 @@ With Misskey's built in drive, you get cloud storage right in your social media,
 	Misskey has a rich and easy to use Web UI!
 	It is highly customizable, from changing the layout and adding widgets to making custom themes.
 	Furthermore, plugins can be created using AiScript, an original programming language.
+- [CHANGELOG](https://github.com/h3zjp/misskey/blob/h3zjp-v13/CHANGELOG.md)
 - And much more...
 
 </div>
