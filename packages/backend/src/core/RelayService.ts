@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IsNull } from 'typeorm';
-import type { ILocalUser, User } from '@/models/entities/User.js';
+import type { LocalUser, User } from '@/models/entities/User.js';
 import type { RelaysRepository, UsersRepository } from '@/models/index.js';
 import { IdService } from '@/core/IdService.js';
 import { Cache } from '@/misc/cache.js';
@@ -34,16 +34,16 @@ export class RelayService {
 	}
 
 	@bindThis
-	private async getRelayActor(): Promise<ILocalUser> {
+	private async getRelayActor(): Promise<LocalUser> {
 		const user = await this.usersRepository.findOneBy({
 			host: IsNull(),
 			username: ACTOR_USERNAME,
 		});
 	
-		if (user) return user as ILocalUser;
+		if (user) return user as LocalUser;
 	
 		const created = await this.createSystemUserService.createSystemUser(ACTOR_USERNAME);
-		return created as ILocalUser;
+		return created as LocalUser;
 	}
 
 	@bindThis
@@ -56,8 +56,8 @@ export class RelayService {
 	
 		const relayActor = await this.getRelayActor();
 		const follow = await this.apRendererService.renderFollowRelay(relay, relayActor);
-		const activity = this.apRendererService.renderActivity(follow);
-		this.queueService.deliver(relayActor, activity, relay.inbox);
+		const activity = this.apRendererService.addContext(follow);
+		this.queueService.deliver(relayActor, activity, relay.inbox, false);
 	
 		return relay;
 	}
@@ -75,8 +75,8 @@ export class RelayService {
 		const relayActor = await this.getRelayActor();
 		const follow = this.apRendererService.renderFollowRelay(relay, relayActor);
 		const undo = this.apRendererService.renderUndo(follow, relayActor);
-		const activity = this.apRendererService.renderActivity(undo);
-		this.queueService.deliver(relayActor, activity, relay.inbox);
+		const activity = this.apRendererService.addContext(undo);
+		this.queueService.deliver(relayActor, activity, relay.inbox, false);
 	
 		await this.relaysRepository.delete(relay.id);
 	}
@@ -120,7 +120,7 @@ export class RelayService {
 		const signed = await this.apRendererService.attachLdSignature(copy, user);
 	
 		for (const relay of relays) {
-			this.queueService.deliver(user, signed, relay.inbox);
+			this.queueService.deliver(user, signed, relay.inbox, false);
 		}
 	}
 }

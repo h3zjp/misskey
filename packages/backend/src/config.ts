@@ -68,6 +68,7 @@ export type Source = {
 
 	mediaProxy?: string;
 	proxyRemoteFiles?: boolean;
+	videoThumbnailGenerator?: string;
 
 	signToActivityPubGet?: boolean;
 };
@@ -90,6 +91,7 @@ export type Mixin = {
 	clientManifestExists: boolean;
 	mediaProxy: string;
 	externalMediaProxyEnabled: boolean;
+	videoThumbnailGenerator: string | null;
 };
 
 export type Config = Source & Mixin;
@@ -144,6 +146,10 @@ export function loadConfig() {
 	const internalMediaProxy = `${mixin.scheme}://${mixin.host}/proxy`;
 	mixin.mediaProxy = externalMediaProxy ?? internalMediaProxy;
 	mixin.externalMediaProxyEnabled = externalMediaProxy !== null && externalMediaProxy !== internalMediaProxy;
+
+	mixin.videoThumbnailGenerator = config.videoThumbnailGenerator ?
+		config.videoThumbnailGenerator.endsWith('/') ? config.videoThumbnailGenerator.substring(0, config.videoThumbnailGenerator.length - 1) : config.videoThumbnailGenerator
+		: null;
 
 	if (!config.redis.prefix) config.redis.prefix = mixin.host;
 
