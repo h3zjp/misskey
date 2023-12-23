@@ -2,3 +2,5 @@ packages:
  - 'packages/backend'
  - 'packages/frontend'
  - 'packages/sw'
+ - 'packages/misskey-js'
+ - 'packages/misskey-js/generator'

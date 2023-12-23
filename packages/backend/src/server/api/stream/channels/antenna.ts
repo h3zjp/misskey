@@ -1,9 +1,14 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Injectable } from '@nestjs/common';
 import { isUserRelated } from '@/misc/is-user-related.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { bindThis } from '@/decorators.js';
+import type { GlobalEvents } from '@/core/GlobalEventService.js';
 import Channel from '../channel.js';
-import type { StreamMessages } from '../types.js';
 
 class AntennaChannel extends Channel {
 	public readonly chName = 'antenna';
@@ -30,16 +35,16 @@ class AntennaChannel extends Channel {
 	}
 
 	@bindThis
-	private async onEvent(data: StreamMessages['antenna']['payload']) {
+	private async onEvent(data: GlobalEvents['antenna']['payload']) {
 		if (data.type === 'note') {
 			const note = await this.noteEntityService.pack(data.body.id, this.user, { detail: true });
 
 			// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
-			if (isUserRelated(note, this.muting)) return;
+			if (isUserRelated(note, this.userIdsWhoMeMuting)) return;
 			// 流れてきたNoteがブロックされているユーザーが関わるものだったら無視する
-			if (isUserRelated(note, this.blocking)) return;
+			if (isUserRelated(note, this.userIdsWhoBlockingMe)) return;
 
-			if (note.renote && !note.text && isUserRelated(note, this.renoteMuting)) return;
+			if (note.renote && !note.text && isUserRelated(note, this.userIdsWhoMeMutingRenotes)) return;
 
 			this.connection.cacheNote(note);
 

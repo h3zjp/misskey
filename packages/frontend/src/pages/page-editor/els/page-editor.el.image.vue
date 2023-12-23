@@ -1,25 +1,31 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
 <XContainer :draggable="true" @remove="() => $emit('remove')">
-	<template #header><i class="ti ti-photo"></i> {{ $ts._pages.blocks.image }}</template>
+	<template #header><i class="ti ti-photo"></i> {{ i18n.ts._pages.blocks.image }}</template>
 	<template #func>
 		<button @click="choose()">
 			<i class="ti ti-folder"></i>
 		</button>
 	</template>
 
-	<section class="oyyftmcf">
-		<MkDriveFileThumbnail v-if="file" class="preview" :file="file" fit="contain" @click="choose()"/>
+	<section>
+		<MkDriveFileThumbnail v-if="file" style="height: 150px;" :file="file" fit="contain" @click="choose()"/>
 	</section>
 </XContainer>
 </template>
 
 <script lang="ts" setup>
 /* eslint-disable vue/no-mutating-props */
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import XContainer from '../page-editor.container.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
-import * as os from '@/os';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	modelValue: any
@@ -29,14 +35,14 @@ const emit = defineEmits<{
 	(ev: 'update:modelValue', value: any): void;
 }>();
 
-let file: any = $ref(null);
+const file = ref<any>(null);
 
 async function choose() {
-	os.selectDriveFile(false).then((fileResponse: any) => {
-		file = fileResponse;
+	os.selectDriveFile(false).then((fileResponse) => {
+		file.value = fileResponse[0];
 		emit('update:modelValue', {
 			...props.modelValue,
-			fileId: fileResponse.id,
+			fileId: file.value.id,
 		});
 	});
 }
@@ -48,16 +54,8 @@ onMounted(async () => {
 		os.api('drive/files/show', {
 			fileId: props.modelValue.fileId,
 		}).then(fileResponse => {
-			file = fileResponse;
+			file.value = fileResponse;
 		});
 	}
 });
 </script>
-
-<style lang="scss" scoped>
-.oyyftmcf {
-	> .preview {
-		height: 150px;
-	}
-}
-</style>

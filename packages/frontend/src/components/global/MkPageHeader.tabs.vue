@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="el" :class="$style.tabs" @wheel="onTabWheel">
 	<div :class="$style.tabsInner">
@@ -15,8 +20,8 @@
 					{{ t.title }}
 				</div>
 				<Transition
-					v-else mode="in-out" @enter="enter" @after-enter="afterEnter" @leave="leave"
-					@after-leave="afterLeave"
+					v-else mode="in-out" @enter="enter" @afterEnter="afterEnter" @leave="leave"
+					@afterLeave="afterLeave"
 				>
 					<div v-show="t.key === tab" :class="[$style.tabTitle, $style.animate]">{{ t.title }}</div>
 				</Transition>
@@ -33,19 +38,23 @@
 <script lang="ts">
 export type Tab = {
 	key: string;
-	title: string;
-	icon?: string;
-	iconOnly?: boolean;
 	onClick?: (ev: MouseEvent) => void;
-} & {
-	iconOnly: true;
-	iccn: string;
-};
+} & (
+	| {
+			iconOnly?: false;
+			title: string;
+			icon?: string;
+		}
+	| {
+			iconOnly: true;
+			icon: string;
+		}
+);
 </script>
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, watch, nextTick, shallowRef } from 'vue';
-import { defaultStore } from '@/store';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
@@ -125,9 +134,11 @@ async function enter(el: HTMLElement) {
 
 	setTimeout(renderTab, 170);
 }
+
 function afterEnter(el: HTMLElement) {
 	//el.style.width = '';
 }
+
 async function leave(el: HTMLElement) {
 	const elementWidth = el.getBoundingClientRect().width;
 	el.style.width = elementWidth + 'px';
@@ -136,6 +147,7 @@ async function leave(el: HTMLElement) {
 	el.style.width = '0';
 	el.style.paddingLeft = '0';
 }
+
 function afterLeave(el: HTMLElement) {
 	el.style.width = '';
 }

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="timctyfi" :class="{ disabled, easing }">
 	<div class="label"><slot name="label"></slot></div>
@@ -17,8 +22,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue';
-import * as os from '@/os';
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch, shallowRef } from 'vue';
+import * as os from '@/os.js';
 
 const props = withDefaults(defineProps<{
 	modelValue: number;
@@ -29,6 +34,7 @@ const props = withDefaults(defineProps<{
 	textConverter?: (value: number) => string,
 	showTicks?: boolean;
 	easing?: boolean;
+	continuousUpdate?: boolean;
 }>(), {
 	step: 1,
 	textConverter: (v) => v.toString(),
@@ -39,8 +45,8 @@ const emit = defineEmits<{
 	(ev: 'update:modelValue', value: number): void;
 }>();
 
-const containerEl = ref<HTMLElement>();
-const thumbEl = ref<HTMLElement>();
+const containerEl = shallowRef<HTMLElement>();
+const thumbEl = shallowRef<HTMLElement>();
 
 const rawValue = ref((props.modelValue - props.min) / (props.max - props.min));
 const steppedRawValue = computed(() => {
@@ -118,6 +124,10 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 		const pointerX = ev.touches && ev.touches.length > 0 ? ev.touches[0].clientX : ev.clientX;
 		const pointerPositionOnContainer = pointerX - (containerRect.left + (thumbWidth / 2));
 		rawValue.value = Math.min(1, Math.max(0, pointerPositionOnContainer / (containerEl.value!.offsetWidth - thumbWidth)));
+
+		if (props.continuousUpdate) {
+			emit('update:modelValue', finalValue.value);
+		}
 	};
 
 	let beforeValue = finalValue.value;

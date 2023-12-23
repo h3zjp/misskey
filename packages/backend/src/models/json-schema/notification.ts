@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { notificationTypes } from '@/types.js';
 
 export const packedNotificationSchema = {
@@ -7,21 +12,16 @@ export const packedNotificationSchema = {
 			type: 'string',
 			optional: false, nullable: false,
 			format: 'id',
-			example: 'xxxxxxxxxx',
 		},
 		createdAt: {
 			type: 'string',
 			optional: false, nullable: false,
 			format: 'date-time',
 		},
-		isRead: {
-			type: 'boolean',
-			optional: false, nullable: false,
-		},
 		type: {
 			type: 'string',
 			optional: false, nullable: false,
-			enum: [...notificationTypes],
+			enum: [...notificationTypes, 'reaction:grouped', 'renote:grouped'],
 		},
 		user: {
 			type: 'object',
@@ -42,13 +42,9 @@ export const packedNotificationSchema = {
 			type: 'string',
 			optional: true, nullable: true,
 		},
-		choice: {
-			type: 'number',
-			optional: true, nullable: true,
-		},
-		invitation: {
-			type: 'object',
-			optional: true, nullable: true,
+		achievement: {
+			type: 'string',
+			optional: true, nullable: false,
 		},
 		body: {
 			type: 'string',
@@ -61,6 +57,34 @@ export const packedNotificationSchema = {
 		icon: {
 			type: 'string',
 			optional: true, nullable: true,
+		},
+		reactions: {
+			type: 'array',
+			optional: true, nullable: true,
+			items: {
+				type: 'object',
+				properties: {
+					user: {
+						type: 'object',
+						ref: 'UserLite',
+						optional: false, nullable: false,
+					},
+					reaction: {
+						type: 'string',
+						optional: false, nullable: false,
+					},
+				},
+				required: ['user', 'reaction'],
+			},
+		},
+		users: {
+			type: 'array',
+			optional: true, nullable: true,
+			items: {
+				type: 'object',
+				ref: 'UserLite',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;

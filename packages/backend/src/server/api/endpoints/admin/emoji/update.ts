@@ -1,14 +1,19 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
-import { DataSource, IsNull } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { EmojisRepository } from '@/models/index.js';
+import { CustomEmojiService } from '@/core/CustomEmojiService.js';
+import type { DriveFilesRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
-import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
-import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { ApiError } from '../../../error.js';
 
 export const meta = {
 	tags: ['admin'],
+
+	kind: 'read:admin',
 
 	requireCredential: true,
 	requireRolePolicy: 'canManageCustomEmojis',
@@ -18,6 +23,11 @@ export const meta = {
 			message: 'No such emoji.',
 			code: 'NO_SUCH_EMOJI',
 			id: '684dec9d-a8c2-4364-9aa8-456c49cb1dc8',
+		},
+		noSuchFile: {
+			message: 'No such file.',
+			code: 'NO_SUCH_FILE',
+			id: '14fb9fd9-0731-4e2f-aeb9-f09e4740333d',
 		},
 		sameNameEmojiExists: {
 			message: 'Emoji that have same name already exists.',
@@ -32,6 +42,7 @@ export const paramDef = {
 	properties: {
 		id: { type: 'string', format: 'misskey:id' },
 		name: { type: 'string', pattern: '^[a-zA-Z0-9_]+$' },
+		fileId: { type: 'string', format: 'misskey:id' },
 		category: {
 			type: 'string',
 			nullable: true,
@@ -41,55 +52,50 @@ export const paramDef = {
 			type: 'string',
 		} },
 		license: { type: 'string', nullable: true },
+		isSensitive: { type: 'boolean' },
+		localOnly: { type: 'boolean' },
+		roleIdsThatCanBeUsedThisEmojiAsReaction: { type: 'array', items: {
+			type: 'string',
+		} },
 	},
 	required: ['id', 'name', 'aliases'],
 } as const;
 
-// TODO: ロジックをサービスに切り出す
-
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		@Inject(DI.db)
-		private db: DataSource,
+		@Inject(DI.driveFilesRepository)
+		private driveFilesRepository: DriveFilesRepository,
 
-		@Inject(DI.emojisRepository)
-		private emojisRepository: EmojisRepository,
-
-		private emojiEntityService: EmojiEntityService,
-		private globalEventService: GlobalEventService,
+		private customEmojiService: CustomEmojiService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const emoji = await this.emojisRepository.findOneBy({ id: ps.id });
-			const sameNameEmoji = await this.emojisRepository.findOneBy({ name: ps.name, host: IsNull() });
-			if (emoji == null) throw new ApiError(meta.errors.noSuchEmoji);
-			if (sameNameEmoji != null && sameNameEmoji.id !== ps.id) throw new ApiError(meta.errors.sameNameEmojiExists);
-			await this.emojisRepository.update(emoji.id, {
-				updatedAt: new Date(),
-				name: ps.name,
-				category: ps.category,
-				aliases: ps.aliases,
-				license: ps.license,
-			});
+			let driveFile;
 
-			await this.db.queryResultCache?.remove(['meta_emojis']);
-
-			const updated = await this.emojiEntityService.packDetailed(emoji.id);
-
-			if (emoji.name === ps.name) {
-				this.globalEventService.publishBroadcastStream('emojiUpdated', {
-					emojis: [updated],
-				});
-			} else {
-				this.globalEventService.publishBroadcastStream('emojiDeleted', {
-					emojis: [await this.emojiEntityService.packDetailed(emoji)],
-				});
-
-				this.globalEventService.publishBroadcastStream('emojiAdded', {
-					emoji: updated,
-				});	
+			if (ps.fileId) {
+				driveFile = await this.driveFilesRepository.findOneBy({ id: ps.fileId });
+				if (driveFile == null) throw new ApiError(meta.errors.noSuchFile);
 			}
+			const emoji = await this.customEmojiService.getEmojiById(ps.id);
+			if (emoji != null) {
+				if (ps.name !== emoji.name) {
+					const isDuplicate = await this.customEmojiService.checkDuplicate(ps.name);
+					if (isDuplicate) throw new ApiError(meta.errors.sameNameEmojiExists);
+				}
+			} else {
+				throw new ApiError(meta.errors.noSuchEmoji);
+			}
+
+			await this.customEmojiService.update(ps.id, {
+				driveFile,
+				name: ps.name,
+				category: ps.category ?? null,
+				aliases: ps.aliases,
+				license: ps.license ?? null,
+				isSensitive: ps.isSensitive,
+				localOnly: ps.localOnly,
+				roleIdsThatCanBeUsedThisEmojiAsReaction: ps.roleIdsThatCanBeUsedThisEmojiAsReaction,
+			}, me);
 		});
 	}
 }

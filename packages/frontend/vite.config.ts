@@ -1,10 +1,11 @@
 import path from 'path';
+import pluginReplace from '@rollup/plugin-replace';
 import pluginVue from '@vitejs/plugin-vue';
-import { defineConfig } from 'vite';
-import { configDefaults as vitestConfigDefaults } from 'vitest/config';
+import { type UserConfig, defineConfig } from 'vite';
 
 import locales from '../../locales';
 import meta from '../../package.json';
+import pluginUnwindCssModuleClassName from './lib/rollup-plugin-unwind-css-module-class-name';
 import pluginJson5 from './vite.json5';
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json', '.json5', '.svg', '.sass', '.scss', '.css', '.vue'];
@@ -38,15 +39,28 @@ function toBase62(n: number): string {
 	return result;
 }
 
-export default defineConfig(({ command, mode }) => {
+export function getConfig(): UserConfig {
 	return {
 		base: '/vite/',
 
+		server: {
+			port: 5173,
+		},
+
 		plugins: [
-			pluginVue({
-				reactivityTransform: true,
-			}),
+			pluginVue(),
+			pluginUnwindCssModuleClassName(),
 			pluginJson5(),
+			...process.env.NODE_ENV === 'production'
+				? [
+					pluginReplace({
+						preventAssignment: true,
+						values: {
+							'isChromatic()': JSON.stringify(false),
+						},
+					}),
+				]
+				: [],
 		],
 
 		resolve: {
@@ -62,7 +76,7 @@ export default defineConfig(({ command, mode }) => {
 
 		css: {
 			modules: {
-				generateScopedName: (name, filename, css) => {
+				generateScopedName(name, filename, _css): string {
 					const id = (path.relative(__dirname, filename.split('?')[0]) + '-' + name).replace(/[\\\/\.\?&=]/g, '-').replace(/(src-|vue-)/g, '');
 					if (process.env.NODE_ENV === 'production') {
 						return 'x' + toBase62(hash(id)).substring(0, 4);
@@ -86,22 +100,29 @@ export default defineConfig(({ command, mode }) => {
 			__VUE_PROD_DEVTOOLS__: false,
 		},
 
+		// https://vitejs.dev/guide/dep-pre-bundling.html#monorepos-and-linked-dependencies
+		optimizeDeps: {
+			include: ['misskey-js'],
+		},
+
 		build: {
 			target: [
-				'chrome108',
-				'firefox109',
+				'chrome116',
+				'firefox116',
 				'safari16',
 			],
 			manifest: 'manifest.json',
 			rollupOptions: {
 				input: {
-					app: './src/init.ts',
+					app: './src/_boot_.ts',
 				},
 				output: {
 					manualChunks: {
 						vue: ['vue'],
 						photoswipe: ['photoswipe', 'photoswipe/lightbox', 'photoswipe/style.css'],
 					},
+					chunkFileNames: process.env.NODE_ENV === 'production' ? '[hash:8].js' : '[name]-[hash:8].js',
+					assetFileNames: process.env.NODE_ENV === 'production' ? '[hash:8][extname]' : '[name]-[hash:8][extname]',
 				},
 			},
 			cssCodeSplit: true,
@@ -110,16 +131,33 @@ export default defineConfig(({ command, mode }) => {
 			emptyOutDir: false,
 			sourcemap: process.env.NODE_ENV === 'development',
 			reportCompressedSize: false,
+
+			// https://vitejs.dev/guide/dep-pre-bundling.html#monorepos-and-linked-dependencies
+			commonjsOptions: {
+				include: [/misskey-js/, /node_modules/],
+			},
+		},
+
+		worker: {
+			format: 'es',
 		},
 
 		test: {
 			environment: 'happy-dom',
 			deps: {
-				inline: [
-					// XXX: misskey-dev/browser-image-resizer has no "type": "module"
-					'browser-image-resizer',
-				],
+				optimizer: {
+					web: {
+						include: [
+							// XXX: misskey-dev/browser-image-resizer has no "type": "module"
+							'browser-image-resizer',
+						],
+					},
+				},
 			},
 		},
 	};
-});
+}
+
+const config = defineConfig(({ command, mode }) => getConfig());
+
+export default config;

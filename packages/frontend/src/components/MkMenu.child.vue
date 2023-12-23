@@ -1,13 +1,18 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="el" :class="$style.root">
-	<MkMenu :items="items" :align="align" :width="width" :as-drawer="false" @close="onChildClosed"/>
+	<MkMenu :items="items" :align="align" :width="width" :asDrawer="false" @close="onChildClosed"/>
 </div>
 </template>
 
 <script lang="ts" setup>
 import { nextTick, onMounted, onUnmounted, shallowRef, watch } from 'vue';
 import MkMenu from './MkMenu.vue';
-import { MenuItem } from '@/types/menu';
+import { MenuItem } from '@/types/menu.js';
 
 const props = defineProps<{
 	items: MenuItem[];
