@@ -96,6 +96,7 @@ type Source = {
 
 export type Config = {
 	url: string;
+	bind: string;
 	port: number;
 	socket: string | undefined;
 	chmodSocket: string | undefined;
@@ -211,6 +212,7 @@ export function loadConfig(): Config {
 	return {
 		version,
 		url: url.origin,
+		bind: config.bind,
 		port: config.port ?? parseInt(process.env.PORT ?? '', 10),
 		socket: config.socket,
 		chmodSocket: config.chmodSocket,
