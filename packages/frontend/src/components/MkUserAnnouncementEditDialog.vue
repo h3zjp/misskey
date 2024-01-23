@@ -56,6 +56,7 @@ import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -66,7 +67,7 @@ const props = defineProps<{
 	announcement?: any,
 }>();
 
-const dialog = ref(null);
+const dialog = ref<InstanceType<typeof MkModalWindow> | null>(null);
 const title = ref<string>(props.announcement ? props.announcement.title : '');
 const text = ref<string>(props.announcement ? props.announcement.text : '');
 const icon = ref<string>(props.announcement ? props.announcement.icon : 'info');
@@ -117,11 +118,11 @@ async function done() {
 async function del() {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('removeAreYouSure', { x: title.value }),
+		text: i18n.tsx.removeAreYouSure({ x: title.value }),
 	});
 	if (canceled) return;
 
-	os.api('admin/announcements/delete', {
+	misskeyApi('admin/announcements/delete', {
 		id: props.announcement.id,
 	}).then(() => {
 		emit('done', {

@@ -52,7 +52,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: 'change', _ev: KeyboardEvent): void;
+	(ev: 'changeByUser'): void;
 	(ev: 'update:modelValue', value: string | null): void;
 }>();
 
@@ -65,10 +65,10 @@ const opening = ref(false);
 const changed = ref(false);
 const invalid = ref(false);
 const filled = computed(() => v.value !== '' && v.value != null);
-const inputEl = ref(null);
-const prefixEl = ref(null);
-const suffixEl = ref(null);
-const container = ref(null);
+const inputEl = ref<HTMLObjectElement | null>(null);
+const prefixEl = ref<HTMLElement | null>(null);
+const suffixEl = ref<HTMLElement | null>(null);
+const container = ref<HTMLElement | null>(null);
 const height =
 	props.small ? 33 :
 	props.large ? 39 :
@@ -77,7 +77,6 @@ const height =
 const focus = () => inputEl.value.focus();
 const onInput = (ev) => {
 	changed.value = true;
-	emit('change', ev);
 };
 
 const updated = () => {
@@ -136,6 +135,7 @@ function show(ev: MouseEvent) {
 			active: computed(() => v.value === option.props.value),
 			action: () => {
 				v.value = option.props.value;
+				emit('changeByUser', v.value);
 			},
 		});
 	};

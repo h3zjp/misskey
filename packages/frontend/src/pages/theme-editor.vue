@@ -91,7 +91,7 @@ import darkTheme from '@/themes/_dark.json5';
 import { host } from '@/config.js';
 import * as os from '@/os.js';
 import { ColdDeviceStorage, defaultStore } from '@/store.js';
-import { addTheme } from '@/theme-store';
+import { addTheme } from '@/theme-store.js';
 import { i18n } from '@/i18n.js';
 import { useLeaveGuard } from '@/scripts/use-leave-guard.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -208,7 +208,7 @@ async function saveAs() {
 	changed.value = false;
 	os.alert({
 		type: 'success',
-		text: i18n.t('_theme.installed', { name: theme.value.name }),
+		text: i18n.tsx._theme.installed({ name: theme.value.name }),
 	});
 }
 
