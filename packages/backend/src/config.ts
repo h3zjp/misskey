@@ -94,6 +94,7 @@ type Source = {
 	perUserNotificationsMaxCount?: number;
 	deactivateAntennaThreshold?: number;
 	pidFile: string;
+	misskeyBlockMentionsFromUnfamiliarRemoteUsers?: boolean;
 };
 
 export type Config = {
@@ -172,6 +173,7 @@ export type Config = {
 	perUserNotificationsMaxCount: number;
 	deactivateAntennaThreshold: number;
 	pidFile: string;
+	misskeyBlockMentionsFromUnfamiliarRemoteUsers?: boolean;
 };
 
 const _filename = fileURLToPath(import.meta.url);
@@ -268,6 +270,7 @@ export function loadConfig(): Config {
 		perUserNotificationsMaxCount: config.perUserNotificationsMaxCount ?? 500,
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),
 		pidFile: config.pidFile,
+		misskeyBlockMentionsFromUnfamiliarRemoteUsers: config.misskeyBlockMentionsFromUnfamiliarRemoteUsers ?? false,
 	};
 }
 
