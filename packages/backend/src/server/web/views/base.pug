@@ -34,6 +34,7 @@ html
 		link(rel='search' type='application/opensearchdescription+xml' title=(title || "Misskey") href=`${url}/opensearch.xml`)
 		link(rel='dns-prefetch' href='https://media.h3z.jp')
 		link(rel='dns-prefetch' href='https://logging.h3z.jp')
+		link(rel='dns-prefetch' href='https://logging2.h3z.jp')
 		link(rel='prefetch' href=serverErrorImageUrl)
 		link(rel='prefetch' href=infoImageUrl)
 		link(rel='prefetch' href=notFoundImageUrl)
@@ -76,6 +77,12 @@ html
 		script
 			include ../boot.js
 
+		script
+			include ../analytics.js
+
+		noscript: p
+			<img src="https://logging2.h3z.jp/logging.php?idsite=4&amp;rec=1" style="border:0;" alt="" />
+
 	body
 		noscript: p
 			| JavaScriptを有効にしてください
@@ -95,3 +102,7 @@ html
 					</g>
 				</svg>
 		block content
+
+		script(src="https://logging.h3z.jp/msky/script.js")
+		noscript
+			<img src="https://logging.h3z.jp/msky/logging.php" alt="" width="1" height="1" />
