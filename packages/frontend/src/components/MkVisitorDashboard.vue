@@ -4,19 +4,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="meta" :class="$style.root">
+<div v-if="instance" :class="$style.root">
 	<div :class="[$style.main, $style.panel]">
 		<img :src="instance.iconUrl || '/favicon.ico'" alt="" :class="$style.mainIcon"/>
 		<button class="_button _acrylic" :class="$style.mainMenu" @click="showMenu"><i class="ti ti-dots"></i></button>
 		<div :class="$style.mainFg">
 			<h1 :class="$style.mainTitle">
 				<!-- 背景色によってはロゴが見えなくなるのでとりあえず無効に -->
-				<!-- <img class="logo" v-if="meta.logoImageUrl" :src="meta.logoImageUrl"><span v-else class="text">{{ instanceName }}</span> -->
+				<!-- <img class="logo" v-if="instance.logoImageUrl" :src="instance.logoImageUrl"><span v-else class="text">{{ instanceName }}</span> -->
 				<span>{{ instanceName }}</span>
 			</h1>
 			<div :class="$style.mainAbout">
 				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div v-html="meta.description || i18n.ts.headlineMisskey"></div>
+				<div v-html="instance.description || i18n.ts.headlineMisskey"></div>
 			</div>
 			<div v-if="instance.disableRegistration" :class="$style.mainWarn">
 				<MkInfo warn>{{ i18n.ts.invitationRequiredToRegister }}</MkInfo>
@@ -26,6 +26,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkButton :class="$style.mainAction" full rounded @click="exploreOtherServers()">{{ i18n.ts.exploreOtherServers }}</MkButton>
 				<MkButton :class="$style.mainAction" full rounded data-cy-signin @click="signin()">{{ i18n.ts.login }}</MkButton>
 			</div>
+		</div>
+	</div>
+	<div :class="$style.panel">
+		<div :class="$style.info">
+			<p>招待コードですが、下記ページにて発行ができます。</p>
+			<a href="https://h3z.jp/i0W" target="_blank" title="招待コード発行ページ" rel="noopener">https://h3z.jp/i0W</a>
 		</div>
 	</div>
 	<div v-if="stats" :class="$style.stats">
@@ -47,6 +53,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.panel">
 		<XActiveUsersChart/>
 	</div>
+	<div :class="[$style.footer, $style.panel]">
+		<div :class="$style.links">
+			<a href="#" @click="os.pageWindow('/about')"><u>{{ instanceName }}</u></a>
+			<a href="#" @click="os.pageWindow('/about-misskey')"><u>{{ i18n.ts.aboutMisskey }}</u></a>
+			<a v-if="instance.tosUrl" :href="instance.tosUrl" target="_blank" rel="noopener"><u>{{ i18n.ts.termsOfService }}</u></a>
+			<a v-if="instance.feedbackUrl" :href="instance.feedbackUrl" target="_blank" rel="noopener"><u>{{ i18n.ts.support }}</u></a>
+		</div>
+	</div>
 </div>
 </template>
 
@@ -65,68 +79,33 @@ import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import MkNumber from '@/components/MkNumber.vue';
 import XActiveUsersChart from '@/components/MkVisitorDashboard.ActiveUsersChart.vue';
+import { openInstanceMenu } from '@/ui/_common_/common.js';
+import type { MenuItem } from '@/types/menu.js';
 
-const meta = ref<Misskey.entities.MetaResponse | null>(null);
 const stats = ref<Misskey.entities.StatsResponse | null>(null);
-
-misskeyApi('meta', { detail: true }).then(_meta => {
-	meta.value = _meta;
-});
 
 misskeyApi('stats', {}).then((res) => {
 	stats.value = res;
 });
 
 function signin() {
-	os.popup(XSigninDialog, {
+	const { dispose } = os.popup(XSigninDialog, {
 		autoSet: true,
-	}, {}, 'closed');
+	}, {
+		closed: () => dispose(),
+	});
 }
 
 function signup() {
-	os.popup(XSignupDialog, {
+	const { dispose } = os.popup(XSignupDialog, {
 		autoSet: true,
-	}, {}, 'closed');
+	}, {
+		closed: () => dispose(),
+	});
 }
 
-function showMenu(ev) {
-	os.popupMenu([{
-		text: i18n.ts.instanceInfo,
-		icon: 'ti ti-info-circle',
-		action: () => {
-			os.pageWindow('/about');
-		},
-	}, {
-		text: i18n.ts.aboutMisskey,
-		icon: 'ti ti-info-circle',
-		action: () => {
-			os.pageWindow('/about-misskey');
-		},
-	}, { type: 'divider' }, (instance.impressumUrl) ? {
-		text: i18n.ts.impressum,
-		icon: 'ti ti-file-invoice',
-		action: () => {
-			window.open(instance.impressumUrl!, '_blank', 'noopener');
-		},
-	} : undefined, (instance.tosUrl) ? {
-		text: i18n.ts.termsOfService,
-		icon: 'ti ti-notebook',
-		action: () => {
-			window.open(instance.tosUrl!, '_blank', 'noopener');
-		},
-	} : undefined, (instance.privacyPolicyUrl) ? {
-		text: i18n.ts.privacyPolicy,
-		icon: 'ti ti-shield-lock',
-		action: () => {
-			window.open(instance.privacyPolicyUrl!, '_blank', 'noopener');
-		},
-	} : undefined, (!instance.impressumUrl && !instance.tosUrl && !instance.privacyPolicyUrl) ? undefined : { type: 'divider' }, {
-		text: i18n.ts.help,
-		icon: 'ti ti-help-circle',
-		action: () => {
-			window.open('https://misskey-hub.net/docs/for-users/', '_blank', 'noopener');
-		},
-	}], ev.currentTarget ?? ev.target);
+function showMenu(ev: MouseEvent) {
+	openInstanceMenu(ev);
 }
 
 function exploreOtherServers() {
@@ -239,5 +218,32 @@ function exploreOtherServers() {
 .tlBody {
 	height: 350px;
 	overflow: auto;
+}
+
+.info {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: normal;
+	justify-content: left;
+	margin-bottom: 12px;
+	padding: 12px 16px;
+	gap: 8px 8px;
+}
+
+.footer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 16px;
+	gap: 8px 8px;
+}
+
+.links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 8px 8px;
 }
 </style>

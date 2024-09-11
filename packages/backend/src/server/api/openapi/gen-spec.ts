@@ -15,12 +15,11 @@ export function genOpenapiSpec(config: Config, includeSelfRef = false) {
 		info: {
 			version: config.version,
 			title: 'Misskey API',
-			'x-logo': { url: '/static-assets/api-doc.png' },
 		},
 
 		externalDocs: {
 			description: 'Repository',
-			url: 'https://github.com/misskey-dev/misskey',
+			url: 'https://github.com/h3zjp/misskey',
 		},
 
 		servers: [{
@@ -93,12 +92,12 @@ export function genOpenapiSpec(config: Config, includeSelfRef = false) {
 		const hasBody = (schema.type === 'object' && schema.properties && Object.keys(schema.properties).length >= 1);
 
 		const info = {
-			operationId: endpoint.name,
+			operationId: endpoint.name.replaceAll('/', '___'), // NOTE: スラッシュは使えない
 			summary: endpoint.name,
 			description: desc,
 			externalDocs: {
 				description: 'Source code',
-				url: `https://github.com/misskey-dev/misskey/blob/develop/packages/backend/src/server/api/endpoints/${endpoint.name}.ts`,
+				url: `https://github.com/h3zjp/misskey/blob/h3zjp-v2023/packages/backend/src/server/api/endpoints/${endpoint.name}.ts`,
 			},
 			...(endpoint.meta.tags ? {
 				tags: [endpoint.meta.tags[0]],
