@@ -217,58 +217,80 @@
 		addStyle(`
 		@charset "utf-8";
 		@font-face {
-		  font-family: "Koruri";
-		  src: local('Koruri-Light'),
-		  url('https://media.h3z.jp/fonts/Koruri-Light.woff2') format('woff2'),
-		  url('https://media.h3z.jp/fonts/Koruri-Light.woff') format('woff'),
-		  url('https://media.h3z.jp/fonts/Koruri-Light.ttf') format('truetype');
-		  font-weight: 300;
-		  font-style: normal;
-		  font-display: swap;
-		}
-		@font-face {
-		  font-family: "Koruri";
-		  src: local('Koruri-Regular'),
-		  url('https://media.h3z.jp/fonts/Koruri-Regular.woff2') format('woff2'),
-		  url('https://media.h3z.jp/fonts/Koruri-Regular.woff') format('woff'),
-		  url('https://media.h3z.jp/fonts/Koruri-Regular.ttf') format('truetype');
+		  font-family: 'BIZUDPGothic';
+		  src: local('BIZUDPGothic-Regular'),
+		  url('https://media.h3z.jp/fonts/BIZUDPGothic-Regular.woff2') format('woff2'),
+		  url('https://media.h3z.jp/fonts/BIZUDPGothic-Regular.woff') format('woff'),
+		  url('https://media.h3z.jp/fonts/BIZUDPGothic-Regular.ttf') format('truetype');
 		  font-weight: 400;
 		  font-style: normal;
 		  font-display: swap;
 		}
 		@font-face {
-		  font-family: "Koruri";
-		  src: local('Koruri-Semibold'),
-		  url('https://media.h3z.jp/fonts/Koruri-Semibold.woff2') format('woff2'),
-		  url('https://media.h3z.jp/fonts/Koruri-Semibold.woff') format('woff'),
-		  url('https://media.h3z.jp/fonts/Koruri-Semibold.ttf') format('truetype');
-		  font-weight: 600;
-		  font-style: normal;
-		  font-display: swap;
-		}
-		@font-face {
-		  font-family: "Koruri";
-		  src: local('Koruri-Bold'),
-		  url('https://media.h3z.jp/fonts/Koruri-Bold.woff2') format('woff2'),
-		  url('https://media.h3z.jp/fonts/Koruri-Bold.woff') format('woff'),
-		  url('https://media.h3z.jp/fonts/Koruri-Bold.ttf') format('truetype');
+		  font-family: 'BIZUDPGothic';
+		  src: local('BIZUDPGothic-Bold'),
+		  url('https://media.h3z.jp/fonts/BIZUDPGothic-Bold.woff2') format('woff2'),
+		  url('https://media.h3z.jp/fonts/BIZUDPGothic-Bold.woff') format('woff'),
+		  url('https://media.h3z.jp/fonts/BIZUDPGothic-Bold.ttf') format('truetype');
 		  font-weight: 700;
 		  font-style: normal;
 		  font-display: swap;
 		}
 		@font-face {
-		  font-family: "Koruri";
-		  src: local('Koruri-Extrabold'),
-		  url('https://media.h3z.jp/fonts/Koruri-Extrabold.woff2') format('woff2'),
-		  url('https://media.h3z.jp/fonts/Koruri-Extrabold.woff') format('woff'),
-		  url('https://media.h3z.jp/fonts/Koruri-Extrabold.ttf') format('truetype');
-		  font-weight: 800;
+		  font-family: 'Fira Code';
+		  src: local('FiraCode-Light'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Light.woff2') format('woff2'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Light.woff') format('woff'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Light.ttf') format('truetype');
+		  font-weight: 300;
+		  font-style: normal;
+		  font-display: swap;
+		}
+		@font-face {
+		  font-family: 'Fira Code';
+		  src: local('FiraCode-Regular'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Regular.woff2') format('woff2'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Regular.woff') format('woff'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Regular.ttf') format('truetype');
+		  font-weight: 400;
+		  font-style: normal;
+		  font-display: swap;
+		}
+		@font-face {
+		  font-family: 'Fira Code';
+		  src: local('FiraCode-Medium'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Meduim.woff2') format('woff2'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Medium.woff') format('woff'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Medium.ttf') format('truetype');
+		  font-weight: 500;
+		  font-style: normal;
+		  font-display: swap;
+		}
+		@font-face {
+		  font-family: 'Fira Code';
+		  src: local('FiraCode-SemiBold'),
+		  url('https://media.h3z.jp/fonts/FiraCode-SemiBold.woff2') format('woff2'),
+		  url('https://media.h3z.jp/fonts/FiraCode-SemiBold.woff') format('woff'),
+		  url('https://media.h3z.jp/fonts/FiraCode-SemiBold.ttf') format('truetype');
+		  font-weight: 600;
+		  font-style: normal;
+		  font-display: swap;
+		}
+		@font-face {
+		  font-family: 'Fira Code';
+		  src: local('FiraCode-Bold'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Bold.woff2') format('woff2'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Bold.woff') format('woff'),
+		  url('https://media.h3z.jp/fonts/FiraCode-Bold.ttf') format('truetype');
+		  font-weight: 700;
 		  font-style: normal;
 		  font-display: swap;
 		}
 
 		* {
-			font-family: "Koruri", sans-serif;
+			font-family: 'BIZUDPGothic', sans-serif;
+			font-weight: 400;
+			font-style: normal;
 		}
 
 		#misskey_app,
@@ -347,7 +369,7 @@
 		}
 
 		code {
-			font-family: Fira, FiraCode, monospace;
+			font-family: 'Fira Code', monospace;
 		}
 
 		#errorInfo {

@@ -3,9 +3,59 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+@font-face {
+  font-family: 'Fira Code';
+  src: local('FiraCode-Light'),
+  url('https://media.h3z.jp/fonts/FiraCode-Light.woff2') format('woff2'),
+  url('https://media.h3z.jp/fonts/FiraCode-Light.woff') format('woff'),
+  url('https://media.h3z.jp/fonts/FiraCode-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: local('FiraCode-Regular'),
+  url('https://media.h3z.jp/fonts/FiraCode-Regular.woff2') format('woff2'),
+  url('https://media.h3z.jp/fonts/FiraCode-Regular.woff') format('woff'),
+  url('https://media.h3z.jp/fonts/FiraCode-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: local('FiraCode-Medium'),
+  url('https://media.h3z.jp/fonts/FiraCode-Meduim.woff2') format('woff2'),
+  url('https://media.h3z.jp/fonts/FiraCode-Medium.woff') format('woff'),
+  url('https://media.h3z.jp/fonts/FiraCode-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: local('FiraCode-SemiBold'),
+  url('https://media.h3z.jp/fonts/FiraCode-SemiBold.woff2') format('woff2'),
+  url('https://media.h3z.jp/fonts/FiraCode-SemiBold.woff') format('woff'),
+  url('https://media.h3z.jp/fonts/FiraCode-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: local('FiraCode-Bold'),
+  url('https://media.h3z.jp/fonts/FiraCode-Bold.woff2') format('woff2'),
+  url('https://media.h3z.jp/fonts/FiraCode-Bold.woff') format('woff'),
+  url('https://media.h3z.jp/fonts/FiraCode-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 * {
-	font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+	font-family: 'Fira Code', monospace;
 }
 
 html {
