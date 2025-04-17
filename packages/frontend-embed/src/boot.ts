@@ -145,6 +145,7 @@ window.onunhandledrejection = null;
 removeSplash();
 
 //#region Self-XSS 対策メッセージ
+/*
 console.log(
 	`%c${i18n.ts._selfXssPrevention.warning}`,
 	'color: #f00; background-color: #ff0; font-size: 36px; padding: 4px;',
@@ -164,6 +165,7 @@ console.log(
 );
 console.log(i18n.tsx._selfXssPrevention.description3({ link: 'https://misskey-hub.net/docs/for-users/resources/self-xss/' }));
 //#endregion
+*/
 
 function removeSplash() {
 	const splash = document.getElementById('splash');

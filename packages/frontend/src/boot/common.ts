@@ -335,6 +335,7 @@ export async function common(createVue: () => Promise<App<Element>>) {
 	removeSplash();
 
 	//#region Self-XSS 対策メッセージ
+	/*
 	if (!_DEV_) {
 		console.log(
 			`%c${i18n.ts._selfXssPrevention.warning}`,
@@ -356,6 +357,7 @@ export async function common(createVue: () => Promise<App<Element>>) {
 		console.log(i18n.tsx._selfXssPrevention.description3({ link: 'https://misskey-hub.net/docs/for-users/resources/self-xss/' }));
 	}
 	//#endregion
+	*/
 
 	return {
 		isClientUpdated,
