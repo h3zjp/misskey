@@ -60,7 +60,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<a href="#" @click="os.pageWindow('/about')"><u>{{ instanceName }}</u></a>
 			<a href="#" @click="os.pageWindow('/about-misskey')"><u>{{ i18n.ts.aboutMisskey }}</u></a>
 			<a v-if="instance.tosUrl" :href="instance.tosUrl" target="_blank" rel="noopener"><u>{{ i18n.ts.termsOfService }}</u></a>
-			<a v-if="instance.feedbackUrl" :href="instance.feedbackUrl" target="_blank" rel="noopener"><u>{{ i18n.ts.support }}</u></a>
 		</div>
 	</div>
 </div>
