@@ -7,6 +7,7 @@ import * as fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import * as yaml from 'js-yaml';
+import { type FastifyServerOptions } from 'fastify';
 import type * as Sentry from '@sentry/node';
 import type * as SentryVue from '@sentry/vue';
 import type { RedisOptions } from 'ioredis';
@@ -28,6 +29,7 @@ type Source = {
 	bind: string;
 	port?: number;
 	socket?: string;
+	trustProxy?: FastifyServerOptions['trustProxy'];
 	chmodSocket?: string;
 	disableHsts?: boolean;
 	db: {
@@ -121,6 +123,7 @@ export type Config = {
 	bind: string;
 	port: number;
 	socket: string | undefined;
+	trustProxy: FastifyServerOptions['trustProxy'];
 	chmodSocket: string | undefined;
 	disableHsts: boolean | undefined;
 	db: {
@@ -187,9 +190,9 @@ export type Config = {
 	authUrl: string;
 	driveUrl: string;
 	userAgent: string;
-	frontendEntry: string;
+	frontendEntry: { file: string | null };
 	frontendManifestExists: boolean;
-	frontendEmbedEntry: string;
+	frontendEmbedEntry: { file: string | null };
 	frontendEmbedManifestExists: boolean;
 	mediaProxy: string;
 	externalMediaProxyEnabled: boolean;
@@ -239,10 +242,10 @@ export function loadConfig(): Config {
 	const frontendEmbedManifestExists = fs.existsSync(_dirname + '/../../../built/_frontend_embed_vite_/manifest.json');
 	const frontendManifest = frontendManifestExists ?
 		JSON.parse(fs.readFileSync(`${_dirname}/../../../built/_frontend_vite_/manifest.json`, 'utf-8'))
-		: { 'src/_boot_.ts': { file: 'src/_boot_.ts' } };
+		: { 'src/_boot_.ts': { file: null } };
 	const frontendEmbedManifest = frontendEmbedManifestExists ?
 		JSON.parse(fs.readFileSync(`${_dirname}/../../../built/_frontend_embed_vite_/manifest.json`, 'utf-8'))
-		: { 'src/boot.ts': { file: 'src/boot.ts' } };
+		: { 'src/boot.ts': { file: null } };
 
 	const config = yaml.load(fs.readFileSync(path, 'utf-8')) as Source;
 
@@ -271,6 +274,7 @@ export function loadConfig(): Config {
 		bind: config.bind,
 		port: config.port ?? parseInt(process.env.PORT ?? '', 10),
 		socket: config.socket,
+		trustProxy: config.trustProxy,
 		chmodSocket: config.chmodSocket,
 		disableHsts: config.disableHsts,
 		host,
